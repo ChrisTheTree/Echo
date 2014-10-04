@@ -10,6 +10,12 @@
 	<string>Echo</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>43AC92FD7017ECDE18489EEA6AD2FD795E158D7E</key>
+		<string>github.com:pkyeck/socket.IO-objc.git</string>
+		<key>964D25581C24F7C8578BD65CBF82F08200520F63</key>
+		<string>git://github.com/square/SocketRocket.git</string>
+		<key>ABB939127996C66F7E852A780552ADEEF03C6B13</key>
+		<string>https://github.com/square/SocketRocket.git</string>
 		<key>DD727F831A5CB24E034144AB53BC99C80EBE609C</key>
 		<string>https://github.com/ChrisTheTree/Echo.git</string>
 	</dict>
@@ -17,6 +23,12 @@
 	<string>iOS/Echo/Echo.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>43AC92FD7017ECDE18489EEA6AD2FD795E158D7E</key>
+		<string>../../../..socket.IO-objc</string>
+		<key>964D25581C24F7C8578BD65CBF82F08200520F63</key>
+		<string>../../../..socket.IO-objc/submodules/socket-rocket/pages</string>
+		<key>ABB939127996C66F7E852A780552ADEEF03C6B13</key>
+		<string>../../../..socket.IO-objc/submodules/socket-rocket</string>
 		<key>DD727F831A5CB24E034144AB53BC99C80EBE609C</key>
 		<string>../../../..</string>
 	</dict>
@@ -35,6 +47,30 @@
 			<string>DD727F831A5CB24E034144AB53BC99C80EBE609C</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Echo</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>43AC92FD7017ECDE18489EEA6AD2FD795E158D7E</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Echosocket.IO-objc</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>964D25581C24F7C8578BD65CBF82F08200520F63</string>
+			<key>IDESourceControlWCCName</key>
+			<string>pages</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>ABB939127996C66F7E852A780552ADEEF03C6B13</string>
+			<key>IDESourceControlWCCName</key>
+			<string>socket-rocket</string>
 		</dict>
 	</array>
 </dict>

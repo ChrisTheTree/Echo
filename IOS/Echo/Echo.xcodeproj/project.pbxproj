@@ -10,10 +10,36 @@
 		EF8CEAE619E03B7F00861669 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8CEAE519E03B7F00861669 /* AppDelegate.swift */; };
 		EF8CEAE919E03B7F00861669 /* Echo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EF8CEAE719E03B7F00861669 /* Echo.xcdatamodeld */; };
 		EF8CEAEB19E03B7F00861669 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8CEAEA19E03B7F00861669 /* ViewController.swift */; };
-		EF8CEAEE19E03B7F00861669 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF8CEAEC19E03B7F00861669 /* Main.storyboard */; };
 		EF8CEAF019E03B7F00861669 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF8CEAEF19E03B7F00861669 /* Images.xcassets */; };
-		EF8CEAF319E03B7F00861669 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF8CEAF119E03B7F00861669 /* LaunchScreen.xib */; };
 		EF8CEAFF19E03B7F00861669 /* EchoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8CEAFE19E03B7F00861669 /* EchoTests.swift */; };
+		EF9E4F3919E04C0A007EEC8C /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EF8CED1919E041B300861669 /* libicucore.dylib */; };
+		EF9E4F3A19E04C11007EEC8C /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF8CED1B19E041BA00861669 /* CFNetwork.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		EF9E4F3B19E04C1E007EEC8C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF8CED1D19E041C000861669 /* Security.framework */; };
+		EF9E4F3C19E04C25007EEC8C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF8CED1F19E041C600861669 /* Foundation.framework */; };
+		EF9E505719E04FEE007EEC8C /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = EF9E502D19E04FEE007EEC8C /* .gitignore */; };
+		EF9E505819E04FEE007EEC8C /* .gitmodules in Resources */ = {isa = PBXBuildFile; fileRef = EF9E502E19E04FEE007EEC8C /* .gitmodules */; };
+		EF9E505919E04FEE007EEC8C /* CHANGELOG.md in Sources */ = {isa = PBXBuildFile; fileRef = EF9E502F19E04FEE007EEC8C /* CHANGELOG.md */; };
+		EF9E505A19E04FEE007EEC8C /* CONTRIBUTORS.md in Sources */ = {isa = PBXBuildFile; fileRef = EF9E503019E04FEE007EEC8C /* CONTRIBUTORS.md */; };
+		EF9E505B19E04FEE007EEC8C /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = EF9E503119E04FEE007EEC8C /* LICENSE */; };
+		EF9E505C19E04FEE007EEC8C /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = EF9E503219E04FEE007EEC8C /* README.md */; };
+		EF9E505D19E04FEE007EEC8C /* SocketIO.m in Sources */ = {isa = PBXBuildFile; fileRef = EF9E503419E04FEE007EEC8C /* SocketIO.m */; };
+		EF9E505E19E04FEE007EEC8C /* SocketIOJSONSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = EF9E503619E04FEE007EEC8C /* SocketIOJSONSerialization.m */; };
+		EF9E505F19E04FEE007EEC8C /* SocketIOPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = EF9E503819E04FEE007EEC8C /* SocketIOPacket.m */; };
+		EF9E506019E04FEE007EEC8C /* SocketIOTransportWebsocket.m in Sources */ = {isa = PBXBuildFile; fileRef = EF9E503B19E04FEE007EEC8C /* SocketIOTransportWebsocket.m */; };
+		EF9E506119E04FEE007EEC8C /* SocketIOTransportXHR.m in Sources */ = {isa = PBXBuildFile; fileRef = EF9E503D19E04FEE007EEC8C /* SocketIOTransportXHR.m */; };
+		EF9E506219E04FEE007EEC8C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EF9E504019E04FEE007EEC8C /* AppDelegate.m */; };
+		EF9E506319E04FEE007EEC8C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EF9E504119E04FEE007EEC8C /* InfoPlist.strings */; };
+		EF9E506419E04FEE007EEC8C /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF9E504319E04FEE007EEC8C /* ViewController.xib */; };
+		EF9E506619E04FEE007EEC8C /* SocketTesterARC-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EF9E504619E04FEE007EEC8C /* SocketTesterARC-Info.plist */; };
+		EF9E506819E04FEE007EEC8C /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = EF9E504B19E04FEE007EEC8C /* .gitignore */; };
+		EF9E506919E04FEE007EEC8C /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = EF9E504D19E04FEE007EEC8C /* .gitignore */; };
+		EF9E506A19E04FEE007EEC8C /* .gitmodules in Resources */ = {isa = PBXBuildFile; fileRef = EF9E504E19E04FEE007EEC8C /* .gitmodules */; };
+		EF9E506B19E04FEE007EEC8C /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = EF9E505019E04FEE007EEC8C /* base64.c */; };
+		EF9E506C19E04FEE007EEC8C /* NSData+SRB64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = EF9E505319E04FEE007EEC8C /* NSData+SRB64Additions.m */; };
+		EF9E506D19E04FEE007EEC8C /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = EF9E505619E04FEE007EEC8C /* SRWebSocket.m */; };
+		EF9E50A719E05119007EEC8C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF9E504919E04FEE007EEC8C /* ViewController.m */; };
+		EF9E50A819E05150007EEC8C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF8CEAEC19E03B7F00861669 /* Main.storyboard */; };
+		EF9E50A919E0515A007EEC8C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF8CEAF119E03B7F00861669 /* LaunchScreen.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +64,47 @@
 		EF8CEAF819E03B7F00861669 /* EchoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EchoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF8CEAFD19E03B7F00861669 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EF8CEAFE19E03B7F00861669 /* EchoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EchoTests.swift; sourceTree = "<group>"; };
+		EF8CEB5A19E03DD500861669 /* Echo-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Echo-Bridging-Header.h"; sourceTree = "<group>"; };
+		EF8CED1919E041B300861669 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
+		EF8CED1B19E041BA00861669 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		EF8CED1D19E041C000861669 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		EF8CED1F19E041C600861669 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		EF9E502D19E04FEE007EEC8C /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		EF9E502E19E04FEE007EEC8C /* .gitmodules */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitmodules; sourceTree = "<group>"; };
+		EF9E502F19E04FEE007EEC8C /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
+		EF9E503019E04FEE007EEC8C /* CONTRIBUTORS.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTORS.md; sourceTree = "<group>"; };
+		EF9E503119E04FEE007EEC8C /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		EF9E503219E04FEE007EEC8C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		EF9E503319E04FEE007EEC8C /* SocketIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketIO.h; sourceTree = "<group>"; };
+		EF9E503419E04FEE007EEC8C /* SocketIO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketIO.m; sourceTree = "<group>"; };
+		EF9E503519E04FEE007EEC8C /* SocketIOJSONSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketIOJSONSerialization.h; sourceTree = "<group>"; };
+		EF9E503619E04FEE007EEC8C /* SocketIOJSONSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketIOJSONSerialization.m; sourceTree = "<group>"; };
+		EF9E503719E04FEE007EEC8C /* SocketIOPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketIOPacket.h; sourceTree = "<group>"; };
+		EF9E503819E04FEE007EEC8C /* SocketIOPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketIOPacket.m; sourceTree = "<group>"; };
+		EF9E503919E04FEE007EEC8C /* SocketIOTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketIOTransport.h; sourceTree = "<group>"; };
+		EF9E503A19E04FEE007EEC8C /* SocketIOTransportWebsocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketIOTransportWebsocket.h; sourceTree = "<group>"; };
+		EF9E503B19E04FEE007EEC8C /* SocketIOTransportWebsocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketIOTransportWebsocket.m; sourceTree = "<group>"; };
+		EF9E503C19E04FEE007EEC8C /* SocketIOTransportXHR.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketIOTransportXHR.h; sourceTree = "<group>"; };
+		EF9E503D19E04FEE007EEC8C /* SocketIOTransportXHR.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketIOTransportXHR.m; sourceTree = "<group>"; };
+		EF9E503F19E04FEE007EEC8C /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		EF9E504019E04FEE007EEC8C /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		EF9E504219E04FEE007EEC8C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		EF9E504419E04FEE007EEC8C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
+		EF9E504519E04FEE007EEC8C /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		EF9E504619E04FEE007EEC8C /* SocketTesterARC-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "SocketTesterARC-Info.plist"; sourceTree = "<group>"; };
+		EF9E504719E04FEE007EEC8C /* SocketTesterARC-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SocketTesterARC-Prefix.pch"; sourceTree = "<group>"; };
+		EF9E504819E04FEE007EEC8C /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		EF9E504919E04FEE007EEC8C /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		EF9E504B19E04FEE007EEC8C /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		EF9E504D19E04FEE007EEC8C /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		EF9E504E19E04FEE007EEC8C /* .gitmodules */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitmodules; sourceTree = "<group>"; };
+		EF9E505019E04FEE007EEC8C /* base64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = base64.c; sourceTree = "<group>"; };
+		EF9E505119E04FEE007EEC8C /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
+		EF9E505219E04FEE007EEC8C /* NSData+SRB64Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SRB64Additions.h"; sourceTree = "<group>"; };
+		EF9E505319E04FEE007EEC8C /* NSData+SRB64Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SRB64Additions.m"; sourceTree = "<group>"; };
+		EF9E505419E04FEE007EEC8C /* SocketRocket-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SocketRocket-Prefix.pch"; sourceTree = "<group>"; };
+		EF9E505519E04FEE007EEC8C /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
+		EF9E505619E04FEE007EEC8C /* SRWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRWebSocket.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +112,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF9E4F3C19E04C25007EEC8C /* Foundation.framework in Frameworks */,
+				EF9E4F3B19E04C1E007EEC8C /* Security.framework in Frameworks */,
+				EF9E4F3A19E04C11007EEC8C /* CFNetwork.framework in Frameworks */,
+				EF9E4F3919E04C0A007EEC8C /* libicucore.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +132,11 @@
 		EF8CEAD719E03B7F00861669 = {
 			isa = PBXGroup;
 			children = (
+				EF9E502C19E04FEE007EEC8C /* socket.IO-objc */,
+				EF8CED1F19E041C600861669 /* Foundation.framework */,
+				EF8CED1D19E041C000861669 /* Security.framework */,
+				EF8CED1B19E041BA00861669 /* CFNetwork.framework */,
+				EF8CED1919E041B300861669 /* libicucore.dylib */,
 				EF8CEAE219E03B7F00861669 /* Echo */,
 				EF8CEAFB19E03B7F00861669 /* EchoTests */,
 				EF8CEAE119E03B7F00861669 /* Products */,
@@ -79,6 +155,7 @@
 		EF8CEAE219E03B7F00861669 /* Echo */ = {
 			isa = PBXGroup;
 			children = (
+				EF8CEB5A19E03DD500861669 /* Echo-Bridging-Header.h */,
 				EF8CEAE519E03B7F00861669 /* AppDelegate.swift */,
 				EF8CEAEA19E03B7F00861669 /* ViewController.swift */,
 				EF8CEAEC19E03B7F00861669 /* Main.storyboard */,
@@ -113,6 +190,82 @@
 				EF8CEAFD19E03B7F00861669 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EF9E502C19E04FEE007EEC8C /* socket.IO-objc */ = {
+			isa = PBXGroup;
+			children = (
+				EF9E502D19E04FEE007EEC8C /* .gitignore */,
+				EF9E502E19E04FEE007EEC8C /* .gitmodules */,
+				EF9E502F19E04FEE007EEC8C /* CHANGELOG.md */,
+				EF9E503019E04FEE007EEC8C /* CONTRIBUTORS.md */,
+				EF9E503119E04FEE007EEC8C /* LICENSE */,
+				EF9E503219E04FEE007EEC8C /* README.md */,
+				EF9E503319E04FEE007EEC8C /* SocketIO.h */,
+				EF9E503419E04FEE007EEC8C /* SocketIO.m */,
+				EF9E503519E04FEE007EEC8C /* SocketIOJSONSerialization.h */,
+				EF9E503619E04FEE007EEC8C /* SocketIOJSONSerialization.m */,
+				EF9E503719E04FEE007EEC8C /* SocketIOPacket.h */,
+				EF9E503819E04FEE007EEC8C /* SocketIOPacket.m */,
+				EF9E503919E04FEE007EEC8C /* SocketIOTransport.h */,
+				EF9E503A19E04FEE007EEC8C /* SocketIOTransportWebsocket.h */,
+				EF9E503B19E04FEE007EEC8C /* SocketIOTransportWebsocket.m */,
+				EF9E503C19E04FEE007EEC8C /* SocketIOTransportXHR.h */,
+				EF9E503D19E04FEE007EEC8C /* SocketIOTransportXHR.m */,
+				EF9E503E19E04FEE007EEC8C /* SocketTesterARC */,
+				EF9E504A19E04FEE007EEC8C /* submodules */,
+			);
+			name = "socket.IO-objc";
+			path = "../socket.IO-objc";
+			sourceTree = "<group>";
+		};
+		EF9E503E19E04FEE007EEC8C /* SocketTesterARC */ = {
+			isa = PBXGroup;
+			children = (
+				EF9E503F19E04FEE007EEC8C /* AppDelegate.h */,
+				EF9E504019E04FEE007EEC8C /* AppDelegate.m */,
+				EF9E504119E04FEE007EEC8C /* InfoPlist.strings */,
+				EF9E504319E04FEE007EEC8C /* ViewController.xib */,
+				EF9E504519E04FEE007EEC8C /* main.m */,
+				EF9E504619E04FEE007EEC8C /* SocketTesterARC-Info.plist */,
+				EF9E504719E04FEE007EEC8C /* SocketTesterARC-Prefix.pch */,
+				EF9E504819E04FEE007EEC8C /* ViewController.h */,
+				EF9E504919E04FEE007EEC8C /* ViewController.m */,
+			);
+			path = SocketTesterARC;
+			sourceTree = "<group>";
+		};
+		EF9E504A19E04FEE007EEC8C /* submodules */ = {
+			isa = PBXGroup;
+			children = (
+				EF9E504B19E04FEE007EEC8C /* .gitignore */,
+				EF9E504C19E04FEE007EEC8C /* socket-rocket */,
+			);
+			path = submodules;
+			sourceTree = "<group>";
+		};
+		EF9E504C19E04FEE007EEC8C /* socket-rocket */ = {
+			isa = PBXGroup;
+			children = (
+				EF9E504D19E04FEE007EEC8C /* .gitignore */,
+				EF9E504E19E04FEE007EEC8C /* .gitmodules */,
+				EF9E504F19E04FEE007EEC8C /* SocketRocket */,
+			);
+			path = "socket-rocket";
+			sourceTree = "<group>";
+		};
+		EF9E504F19E04FEE007EEC8C /* SocketRocket */ = {
+			isa = PBXGroup;
+			children = (
+				EF9E505019E04FEE007EEC8C /* base64.c */,
+				EF9E505119E04FEE007EEC8C /* base64.h */,
+				EF9E505219E04FEE007EEC8C /* NSData+SRB64Additions.h */,
+				EF9E505319E04FEE007EEC8C /* NSData+SRB64Additions.m */,
+				EF9E505419E04FEE007EEC8C /* SocketRocket-Prefix.pch */,
+				EF9E505519E04FEE007EEC8C /* SRWebSocket.h */,
+				EF9E505619E04FEE007EEC8C /* SRWebSocket.m */,
+			);
+			path = SocketRocket;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -195,8 +348,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EF8CEAEE19E03B7F00861669 /* Main.storyboard in Resources */,
-				EF8CEAF319E03B7F00861669 /* LaunchScreen.xib in Resources */,
+				EF9E50A919E0515A007EEC8C /* LaunchScreen.xib in Resources */,
+				EF9E50A819E05150007EEC8C /* Main.storyboard in Resources */,
+				EF9E506819E04FEE007EEC8C /* .gitignore in Resources */,
+				EF9E505B19E04FEE007EEC8C /* LICENSE in Resources */,
+				EF9E506319E04FEE007EEC8C /* InfoPlist.strings in Resources */,
+				EF9E506419E04FEE007EEC8C /* ViewController.xib in Resources */,
+				EF9E506919E04FEE007EEC8C /* .gitignore in Resources */,
+				EF9E505719E04FEE007EEC8C /* .gitignore in Resources */,
+				EF9E506A19E04FEE007EEC8C /* .gitmodules in Resources */,
+				EF9E506619E04FEE007EEC8C /* SocketTesterARC-Info.plist in Resources */,
+				EF9E505819E04FEE007EEC8C /* .gitmodules in Resources */,
 				EF8CEAF019E03B7F00861669 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -215,9 +377,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF9E50A719E05119007EEC8C /* ViewController.m in Sources */,
+				EF9E506119E04FEE007EEC8C /* SocketIOTransportXHR.m in Sources */,
+				EF9E505C19E04FEE007EEC8C /* README.md in Sources */,
+				EF9E506D19E04FEE007EEC8C /* SRWebSocket.m in Sources */,
+				EF9E505A19E04FEE007EEC8C /* CONTRIBUTORS.md in Sources */,
 				EF8CEAEB19E03B7F00861669 /* ViewController.swift in Sources */,
 				EF8CEAE919E03B7F00861669 /* Echo.xcdatamodeld in Sources */,
+				EF9E505D19E04FEE007EEC8C /* SocketIO.m in Sources */,
+				EF9E506C19E04FEE007EEC8C /* NSData+SRB64Additions.m in Sources */,
 				EF8CEAE619E03B7F00861669 /* AppDelegate.swift in Sources */,
+				EF9E505919E04FEE007EEC8C /* CHANGELOG.md in Sources */,
+				EF9E506B19E04FEE007EEC8C /* base64.c in Sources */,
+				EF9E506219E04FEE007EEC8C /* AppDelegate.m in Sources */,
+				EF9E505E19E04FEE007EEC8C /* SocketIOJSONSerialization.m in Sources */,
+				EF9E506019E04FEE007EEC8C /* SocketIOTransportWebsocket.m in Sources */,
+				EF9E505F19E04FEE007EEC8C /* SocketIOPacket.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,6 +429,22 @@
 				EF8CEAF219E03B7F00861669 /* Base */,
 			);
 			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		EF9E504119E04FEE007EEC8C /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EF9E504219E04FEE007EEC8C /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		EF9E504319E04FEE007EEC8C /* ViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EF9E504419E04FEE007EEC8C /* en */,
+			);
+			name = ViewController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -339,20 +530,39 @@
 		EF8CEB0319E03B7F00861669 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
 				INFOPLIST_FILE = Echo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Debug;
 		};
 		EF8CEB0419E03B7F00861669 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
 				INFOPLIST_FILE = Echo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Release;
 		};
@@ -409,6 +619,7 @@
 				EF8CEB0419E03B7F00861669 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EF8CEB0519E03B7F00861669 /* Build configuration list for PBXNativeTarget "EchoTests" */ = {
 			isa = XCConfigurationList;
@@ -417,6 +628,7 @@
 				EF8CEB0719E03B7F00861669 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
