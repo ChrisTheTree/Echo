@@ -9,30 +9,77 @@ var app = express();
 var server = http.createServer(app);
 var io =  socketIO.listen(server);
 
-app.use(express.static(path.join(__dirname, '/')));
+var CLIENT_PLAY_FUTURE_DELAY = 2000;
+var CLIENT_PLAY_POSITION_OFFSET = -500;
+var CLIENT_PLAY_RETRY_OFFSET = 5000;
 
-app.get('/', function(req, res) {
-    console.log('connection');
-    res.send("hi");
-});
+var STATIC_QUEUE_ID = 'universial_queue';
 
-function oneSong(songName, filePath, artist, album, imageUrl) {
-	this.songName = songName;
-	this.imageUrl = imageUrl;
+var app = express();
+var server = http.createServer(app);
+var io =  socketIO.listen(server);
+
+var clientCount = 0;
+var clientIDs = {};
+
+var currentSong;
+var isPlaying = false;
+var currentSongStartTime = 0;
+var currentSongPauseTime = 0;
+
+function Song(songName, filePath, artist, album, timeLength, imageUrl) {
+    this.songName = songName;
+    this.imageUrl = imageUrl;
     this.filePath = filePath;
     this.artist = artist;
     this.album = album;
-	this.voteCount = 0;
-    this.timeStamp = Date.now();
+    this.timeLength = timeLength;
+    this.voteCount = 0;
+    this.timeStamp = getServerUTC();
     this.isPlaying = false;
 };
 
-var queue = {};
+function Queue(queueId) {
+    this.songs = {};
+    this.queueId = queueId;
+};
+
+function getCurrentSongPosition() {
+    var position = 0;
+    if(isPlaying) {
+        position = getServerUTC() - currentSongStartTime;
+    } else {
+        position = currentSongPauseTime - currentSongStartTime;
+    }
+    if(position > 0) {
+        return position;
+    } else {
+        return 0;
+    }
+}
+
+function getCurrentSongInfo(){
+    var songInfo = {};
+    songInfo.song = currentSong;
+    songInfo.playAtTime = getServerUTC() + CLIENT_PLAY_FUTURE_DELAY;
+    if (isPlaying){
+        songInfo.seekTo = getCurrentSongPosition + CLIENT_PLAY_FUTURE_DELAY;
+    } else {
+        songInfo.seekTo = 0;
+    }
+    return songInfo;
+}
+
+function getServerUTC() {
+    return Date.now();
+}
+
+var queue = new Queue(STATIC_QUEUE_ID);
 
 queue.prototype.getQueuedSongs = function() {
     var sortedSongs = [];
-    for (var key in queue) {
-        sortedSongs.push(queue[key]);
+    for (var key in this.songs) {
+        sortedSongs.push(this.songs[key]);
     }
     sortedSongs.sort(function(a, b) {
         var diff = a[voteCount] - b[voteCount];
@@ -46,10 +93,10 @@ queue.prototype.getQueuedSongs = function() {
 
 queue.prototype.getNextSong = function() {
     var maxUpvote = 0;
-    var timeStamp = Date.now();
+    var timeStamp = getServerUTC();
     var nextSong;
-    for (var key in queue) {
-        var song = queue[key];
+    for (var key in this.songs) {
+        var song = this.songs[key];
         if (song.voteCount > maxUpvote) {
             maxUpvote = song.voteCount;
             timeStamp = song.timeStamp;
@@ -61,32 +108,56 @@ queue.prototype.getNextSong = function() {
         }
     }
     nextSong.voteCount = 0;
-    nextSong.timeStamp = Date.now();
+    nextSong.timeStamp = getServerUTC();
     nextSong.isPlaying = true;
     return nextSong;
 }
 
 io.sockets.on('connection', function(socket) {
 
+    //calls function to emit sync on current socket
     orderedQueue = queue.getQueuedSongs();
     socket.emit('updateQueue', orderedQueue);
 
-    socket.on('addSong', function(songName, filePath, artist, album, imageUrl) {
-        var newSong = new oneSong(songName, filePath, artist, album, imageUrl);
-        queue[filePath] = newSong;
+    socket.on('addSong', function(songName, filePath, artist, album, timeLength, imageUrl) {
+        var newSong = new Song(songName, filePath, artist, album, timeLength, imageUrl);
+        queue.songs[filePath] = newSong;
         orderedQueue = queue.getQueuedSongs();
         io.sockets.emit('updateQueue', orderedQueue);
     });
 
     socket.on('removeSongAtFilePath', function(filePath) {
-        delete queue[filePath];
+        delete queue.songs[filePath];
         orderedQueue = queue.getQueuedSongs();
     });
 
     socket.on('upvoteSongAtFilePath', function(filePath) {
-        var song = queue[filePath];
+        var song = queue.songs[filePath];
         song.voteCount += 1;
         orderedQueue = queue.getQueuedSongs();
         io.sockets.emit('updateQueue', orderedQueue);
+    });
+
+    socket.on('client_play', function() {
+        if(isPlaying == false){
+            io.sockets.emit('play', getCurrentSongInfo());
+            isPlaying = true;
+        } else {
+            socket.emit('play', getCurrentSongInfo());
+        }
+    });
+
+    socket.on('client_pause', function() {
+        if(isPlaying) {
+            currentSongPauseTime = getServerUTC();
+            isPlaying = false;
+            io.sockets.emit('pause');
+        } else {
+            socket.emit('pause');
+        }
+    });
+
+    socket.on('client_sync', function() {
+        //calls function to emit sync on current socket
     });
 });
