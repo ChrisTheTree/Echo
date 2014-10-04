@@ -9,6 +9,8 @@
 #ifndef Echo_Echo_Bridging_Header_h
 #define Echo_Echo_Bridging_Header_h
 
-#import SocketIO.h
+#import "../../socket.IO-objc/SocketIO.h"
+#import "../../socket.IO-objc/SocketIOTransport.h"
+#import "../../socket.IO-objc/SocketIOPacket.h"
 
 #endif

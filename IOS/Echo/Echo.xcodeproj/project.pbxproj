@@ -64,7 +64,6 @@
 		EF8CEAF819E03B7F00861669 /* EchoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EchoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF8CEAFD19E03B7F00861669 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EF8CEAFE19E03B7F00861669 /* EchoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EchoTests.swift; sourceTree = "<group>"; };
-		EF8CEB5A19E03DD500861669 /* Echo-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Echo-Bridging-Header.h"; sourceTree = "<group>"; };
 		EF8CED1919E041B300861669 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		EF8CED1B19E041BA00861669 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		EF8CED1D19E041C000861669 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -105,6 +104,7 @@
 		EF9E505419E04FEE007EEC8C /* SocketRocket-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SocketRocket-Prefix.pch"; sourceTree = "<group>"; };
 		EF9E505519E04FEE007EEC8C /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
 		EF9E505619E04FEE007EEC8C /* SRWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRWebSocket.m; sourceTree = "<group>"; };
+		EF9E50AB19E05555007EEC8C /* Echo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Echo-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,7 +155,6 @@
 		EF8CEAE219E03B7F00861669 /* Echo */ = {
 			isa = PBXGroup;
 			children = (
-				EF8CEB5A19E03DD500861669 /* Echo-Bridging-Header.h */,
 				EF8CEAE519E03B7F00861669 /* AppDelegate.swift */,
 				EF8CEAEA19E03B7F00861669 /* ViewController.swift */,
 				EF8CEAEC19E03B7F00861669 /* Main.storyboard */,
@@ -163,6 +162,7 @@
 				EF8CEAF119E03B7F00861669 /* LaunchScreen.xib */,
 				EF8CEAE719E03B7F00861669 /* Echo.xcdatamodeld */,
 				EF8CEAE319E03B7F00861669 /* Supporting Files */,
+				EF9E50AB19E05555007EEC8C /* Echo-Bridging-Header.h */,
 			);
 			path = Echo;
 			sourceTree = "<group>";
@@ -542,6 +542,7 @@
 				INFOPLIST_FILE = Echo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Echo/Echo-Bridging-Header.h";
 				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Debug;
@@ -562,6 +563,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Echo/Echo-Bridging-Header.h";
 				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Release;
