@@ -76,7 +76,7 @@ function getServerUTC() {
 
 var queue = new Queue(STATIC_QUEUE_ID);
 
-queue.prototype.getQueuedSongs = function() {
+Queue.prototype.getQueuedSongs = function() {
     var sortedSongs = [];
     for (var key in this.songs) {
         sortedSongs.push(this.songs[key]);
@@ -91,7 +91,7 @@ queue.prototype.getQueuedSongs = function() {
     return sortedSongs;
 };
 
-queue.prototype.getNextSong = function() {
+Queue.prototype.getNextSong = function() {
     var maxUpvote = 0;
     var timeStamp = getServerUTC();
     var nextSong;
@@ -160,4 +160,7 @@ io.sockets.on('connection', function(socket) {
     socket.on('client_sync', function() {
         //calls function to emit sync on current socket
     });
+});
+
+server.listen(3000, function() {
 });
