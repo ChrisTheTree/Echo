@@ -43,6 +43,7 @@
 - (id) initWithType:(NSString *)packetType;
 - (id) initWithTypeIndex:(int)index;
 - (id) dataAsJSON;
+- (id) dataAsNSData;
 - (NSNumber *) typeAsNumber;
 - (NSString *) typeForIndex:(int)index;
 

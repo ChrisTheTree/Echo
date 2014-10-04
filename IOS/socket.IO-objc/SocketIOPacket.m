@@ -72,6 +72,17 @@
     }
 }
 
+- (id) dataAsNSData
+{
+    if (self.data) {
+        NSData *utf8Data = [self.data dataUsingEncoding:NSUTF8StringEncoding];
+        return utf8Data;
+    }
+    else {
+        return nil;
+    }
+}
+
 - (NSNumber *) typeAsNumber
 {
     NSUInteger index = [_types indexOfObject:self.type];
