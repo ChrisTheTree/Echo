@@ -4,10 +4,12 @@ var url = require('url');
 var fs = require('fs');
 var path = require('path');
 var socketIO = require('socket.io');
+var drone = require('schedule-drone');
 
 var app = express();
 var server = http.createServer(app);
 var io =  socketIO.listen(server);
+var scheduler = drone.daemon();
 
 var CLIENT_PLAY_FUTURE_DELAY = 2000;
 var CLIENT_PLAY_POSITION_OFFSET = -500;
@@ -26,6 +28,7 @@ var currentSong;
 var isPlaying = false;
 var currentSongStartTime = 0;
 var currentSongPauseTime = 0;
+var timeoutObjectForNextSong;
 
 function Song(songName, filePath, artist, album, timeLength, imageUrl) {
     this.songName = songName;
@@ -68,6 +71,10 @@ function getCurrentSongInfo(){
         songInfo.seekTo = 0;
     }
     return songInfo;
+}
+
+function timeoutTillNextSong(){
+    return currentSong.timeLength - getCurrentSongPosition() + 1;
 }
 
 function getServerUTC() {
@@ -113,6 +120,16 @@ Queue.prototype.getNextSong = function() {
     return nextSong;
 }
 
+function playNextSong(){
+    io.sockets.emit('pause');
+    isPlaying = false;
+    currentSong = queue.getNextSong();
+    io.sockets.emit('updateQueue', orderedQueue);
+    io.sockets.emit('play', getCurrentSongInfo());
+    isPlaying = true;
+    timeoutObjectForNextSong = setTimeout(playNextSong, timeoutTillNextSong());
+}
+
 io.sockets.on('connection', function(socket) {
 
     //calls function to emit sync on current socket
@@ -142,6 +159,7 @@ io.sockets.on('connection', function(socket) {
         if(isPlaying == false){
             io.sockets.emit('play', getCurrentSongInfo());
             isPlaying = true;
+            timeoutObjectForNextSong = setTimeout(playNextSong, timeoutTillNextSong());
         } else {
             socket.emit('play', getCurrentSongInfo());
         }
@@ -152,10 +170,12 @@ io.sockets.on('connection', function(socket) {
             currentSongPauseTime = getServerUTC();
             isPlaying = false;
             io.sockets.emit('pause');
+            clearTimeout(timeoutObjectForNextSong);
         } else {
             socket.emit('pause');
         }
     });
+    socket.on('client_next', playNextSong);
 
     socket.on('client_sync', function() {
         //calls function to emit sync on current socket
