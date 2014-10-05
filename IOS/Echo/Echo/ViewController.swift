@@ -145,8 +145,8 @@ class ViewController: UIViewController, SocketIODelegate {
     }
     
     func getOffset(offsets: [CLong]) -> CLong {
-        var counters = [CInt]()
-        var results = [CInt]()
+        var counters = [CLong](count: 10, repeatedValue: 0.0)
+        var results = [CLong](count: 10, repeatedValue: 0.0)
         for var i = 0; i < offsets.count; ++i {
             var counter: CInt = 0
             var sum: CLong = 0
@@ -156,15 +156,15 @@ class ViewController: UIViewController, SocketIODelegate {
                     sum += CLong(counter)
                 }
             }
-            counters[i] = counter
+            counters[i] = CLong(counter)
             if counter != 0 {
-                results[i] = CInt(Double(sum) / Double(counter))
+                results[i] = CLong(Double(sum) / Double(counter))
             }
         }
         var max: CInt = 0
         var maxIndex = 0
         for var i = 0; i < counters.count; ++i {
-            max = counters[i]
+            max = CInt(counters[i])
             maxIndex = i
         }
         if max == 0 {
@@ -179,7 +179,7 @@ class ViewController: UIViewController, SocketIODelegate {
             self.offsets[self.offsetCounter] = offset
             ++offsetCounter
             if offsetCounter < numberOfOffsets {
-                sleep(self.syncDelay)
+//                sleep(self.syncDelay)
                 self.socket.sendEvent("client_sync", withData: nil)
             }
         }
