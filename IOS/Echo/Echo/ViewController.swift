@@ -29,7 +29,6 @@ class ViewController: UIViewController, SocketIODelegate {
         super.viewDidLoad()
         self.playerItem = AVPlayerItem(URL: NSURL(string: self.songPath))
         self.player = AVPlayer(playerItem: playerItem)
-//        while self.player.status != AVPlayerStatusReadyToPlay {}
         weak var weakSelf = self
         waitThenRunOnMain(3.0) {
             if let strongSelf = weakSelf {
@@ -90,14 +89,8 @@ class ViewController: UIViewController, SocketIODelegate {
     
     @IBAction func playButtonPressed(sender: AnyObject) {
         println("play button pressed")
-//        let time = -self.offset / 1000
-//        var futureTime = (time + 5000) / 10000 * 10000
-//        if futureTime - time < 5000 {
-//            futureTime += 10000;
-//        }
         var t = mach_timebase_info(numer: 0, denom: 0)
         mach_timebase_info(&t)
-//        var clientTime = ((mach_absolute_time() * UInt64(time.numer)) / UInt64(time.denom))
         var clientTime = (Double(mach_absolute_time() * UInt64(t.numer)) / Double(UInt64(t.denom)) / 1000000)
         var time: CLong = CLong(clientTime - self.offset)
         var futureTime: CLong = (time + 5000) / 10000 * 10000
@@ -106,8 +99,6 @@ class ViewController: UIViewController, SocketIODelegate {
         }
         clientTime = Double(mach_absolute_time() * UInt64(t.numer)) / Double(UInt64(t.denom)) / 1000000
         var delay = Double(futureTime + CLong(self.offset) - CLong(clientTime)) / 1000.0
-//        var delay = futureTime + self.offset - clientTime
-//        var futureTime = ((time + CLong(5000)) / CLong(10000)) * CLong(10000)
         println("offset is \(self.offset), clientTime is \(clientTime), time is \(time), delay is \(delay)")
         
         weak var weakSelf = self
