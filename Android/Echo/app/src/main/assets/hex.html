@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Echo</title>
+
+    <style type="text/css">
+        html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-height: 100%;
+        position: relative;
+        }
+
+        body {
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+        background-color: #34495e;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100% 100%;
+        position: relative;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 16px;
+        }
+
+        .container {
+        text-align: center;
+        margin: 0 auto;
+        max-width: 600px;
+        color: #2d3a3f;
+        padding-top: 60px;
+        }
+
+        a, a:visited, a:hover {
+        color: inherit;
+        text-decoration: underline;
+        }
+
+        @media screen and (max-width: 600px) {
+        .container {
+        padding-top: 60px;
+        }
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+</div>
+<script src="d3.v3.min.js"></script>
+<script src="trianglify.min.js"></script>
+<script>
+        var t = new Trianglify({noiseIntensity: 0});
+      
+        window.onresize = function() {
+            redraw();
+        };
+
+        function heightChange() {
+            if (height() != prevheight) {
+                console.log("height changed from "+prevheight+" to "+height());
+                prevheight = height();
+                redraw();
+            };
+        }
+
+        redraw();
+
+
+
+        function redraw() {
+            console.log("drawing "+document.body.clientWidth+"x"+height())
+            var pattern = t.generate(document.body.clientWidth, height());
+            document.body.setAttribute('style', 'background-image: '+pattern.dataUrl);
+        };
+
+        function recolor() {
+            t.options.x_gradient = Trianglify.randomColor();
+            t.options.y_gradient = t.options.x_gradient.map(function(c){return d3.rgb(c).brighter(.5)});
+        }
+
+        function noise(i) {
+            i += t.options.noiseIntensity;
+            if (i >= 0 && i <= 1) {
+                t.options.noiseIntensity = i;
+                redraw();
+            } else if (i < 0) {
+                t.options.noiseIntensity = 0;
+                redraw();
+            }
+        }
+
+        function cellsize(i) {
+            i += t.options.cellsize;
+            if (i >= 0) {
+                t.options.cellsize = i;
+                t.options.bleed = i;
+                if (t.options.cellpadding >= t.options.cellsize/2) {
+                    t.options.cellpadding = 5*Math.floor((t.options.cellsize/2 - 1)/5);
+                }
+                redraw();
+            }
+        }
+
+        function cellpadding(i) {
+            i += t.options.cellpadding;
+            if (i >= 0  && i < t.options.cellsize/2) {
+                t.options.cellpadding = i;
+                redraw();
+            }
+        }
+
+        function height() {
+            return Math.max(
+                document.body.scrollHeight, document.documentElement.scrollHeight,
+                document.body.offsetHeight, document.documentElement.offsetHeight,
+                document.body.clientHeight, document.documentElement.clientHeight
+            );
+        }
+        </script>
+</body>
+</html>
