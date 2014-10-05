@@ -30,6 +30,8 @@ function Queue(queueId) {
 }
 
 var queue = new Queue(STATIC_QUEUE_ID);
+currentSong = new Song('Niggas In Paris', 'https://s3.amazonaws.com/alstroe/850920812.mp3', 'J-Z', 'Throne', 219, 'testURL');
+queue.songs['https://s3.amazonaws.com/alstroe/850920812.mp3'] = currentSong;
 
 function Song(songName, filePath, artist, album, timeLength, imageUrl) {
     this.songName = songName;
@@ -40,7 +42,6 @@ function Song(songName, filePath, artist, album, timeLength, imageUrl) {
     this.timeLength = timeLength;
     this.voteCount = 0;
     this.timeStamp = getServerTime();
-    this.isPlaying = false;
 }
 
 function getCurrentSongInfo(){
@@ -55,7 +56,7 @@ function getCurrentSongInfo(){
     return songInfo;
 }
 
-function timeoutTillNextSong(){
+function timeoutTillNextSong() {
     return currentSong.timeLength - getCurrentSongPosition() + 1;
 }
 
@@ -75,7 +76,7 @@ Queue.prototype.getQueuedSongs = function() {
 };
 
 Queue.prototype.getNextSong = function() {
-    var maxUpvote = 0;
+    var maxUpvote = -1;
     var timeStamp = getServerTime();
     var nextSong;
     for (var key in this.songs) {
