@@ -82,7 +82,6 @@ class ViewController: UIViewController, SocketIODelegate {
         } else if name == "offset" {
             let dict = packet.args[0] as NSDictionary
             self.offset = dict.objectForKey("offset") as Double
-            processOffsets(CLong(self.offset))
         } else if name == "play" {
             self.playButtonLabel.text = "Stop"
             
@@ -144,49 +143,5 @@ class ViewController: UIViewController, SocketIODelegate {
             dispatch_get_main_queue(), closure)
     }
     
-    func getOffset(offsets: [CLong]) -> CLong {
-        var counters = [CLong](count: 10, repeatedValue: 0.0)
-        var results = [CLong](count: 10, repeatedValue: 0.0)
-        for var i = 0; i < offsets.count; ++i {
-            var counter: CInt = 0
-            var sum: CLong = 0
-            for otherOffset in offsets {
-                if abs(offsets[i] - otherOffset) <= offsetTolerance {
-                    counter++
-                    sum += CLong(counter)
-                }
-            }
-            counters[i] = CLong(counter)
-            if counter != 0 {
-                results[i] = CLong(Double(sum) / Double(counter))
-            }
-        }
-        var max: CInt = 0
-        var maxIndex = 0
-        for var i = 0; i < counters.count; ++i {
-            max = CInt(counters[i])
-            maxIndex = i
-        }
-        if max == 0 {
-            return CLong(0)
-        } else {
-            return CLong(results[maxIndex])
-        }
-    }
-    
-    func processOffsets(offset: CLong) {
-        if self.offsetCounter < numberOfOffsets {
-            self.offsets[self.offsetCounter] = offset
-            ++offsetCounter
-            if offsetCounter < numberOfOffsets {
-//                sleep(self.syncDelay)
-                self.socket.sendEvent("client_sync", withData: nil)
-            }
-        }
-        if self.offsetCounter >= self.numberOfOffsets {
-            self.offset = Double(getOffset(offsets))
-            self.synchronized = true
-        }
-    }
 }
 
