@@ -65,7 +65,7 @@ public class QueueFragment extends ListFragment {
             }
         });
 
-        Button nextButton = (Button) getView().findViewById(R.id.next);
+        Button nextButton = (Button) getView().findViewById(R.id.next_btn);
         nextButton.setTypeface(font);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override

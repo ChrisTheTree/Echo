@@ -6,9 +6,11 @@ package com.teamfc.echo;
 public class Song {
     public String title;
     public String artist;
+    public int color;
 
-    Song(String title,String artist){
+    Song(String title,String artist, int color){
         this.title = title;
         this.artist = artist;
+        this.color = color;
     }
 }

@@ -21,10 +21,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.teamfc.echo.util.AmazonUtils;
+import com.teamfc.echo.util.ColorUtils;
 import com.teamfc.echo.util.FileUtils;
 
 import java.util.ArrayList;
@@ -94,16 +96,17 @@ public class OnboardingActivity extends FragmentActivity implements QueueFragmen
 
     private void makeQueue() {
         ArrayList<Song> songs = new ArrayList<Song>();
-        songs.add(new Song("Baby","Justin Biebs"));
-        songs.add(new Song("Niggas in Paris","Jay-Z, Kanye West"));
-        songs.add(new Song("The Humpty Dance", "Digital Underground"));
-        songs.add(new Song("Thrift Shop", "Macklemore & Ryan Lewis feat. Wanz"));
-        songs.add(new Song("Tootsee Roll", "69 Boyz"));
-        songs.add(new Song("Baby","Justin Biebs"));
-        songs.add(new Song("Niggas in Paris","Jay-Z, Kanye West"));
-        songs.add(new Song("The Humpty Dance", "Digital Underground"));
-        songs.add(new Song("Thrift Shop", "Macklemore & Ryan Lewis feat. Wanz"));
-        songs.add(new Song("Tootsee Roll", "69 Boyz"));
+        ColorUtils colorUtils = new ColorUtils(this);
+        songs.add(new Song("Baby","Justin Biebs",colorUtils.getColor()));
+        songs.add(new Song("Niggas in Paris","Jay-Z, Kanye West",colorUtils.getColor()));
+        songs.add(new Song("The Humpty Dance", "Digital Underground",colorUtils.getColor()));
+        songs.add(new Song("Thrift Shop", "Macklemore & Ryan Lewis feat. Wanz",colorUtils.getColor()));
+        songs.add(new Song("Tootsee Roll", "69 Boyz",colorUtils.getColor()));
+        songs.add(new Song("Baby","Justin Biebs",colorUtils.getColor()));
+        songs.add(new Song("Niggas in Paris","Jay-Z, Kanye West",colorUtils.getColor()));
+        songs.add(new Song("The Humpty Dance", "Digital Underground",colorUtils.getColor()));
+        songs.add(new Song("Thrift Shop", "Macklemore & Ryan Lewis feat. Wanz",colorUtils.getColor()));
+        songs.add(new Song("Tootsee Roll", "69 Boyz",colorUtils.getColor()));
 
         SongAdapter adapter = new SongAdapter(this, songs);
         ((ListFragment)mPagerAdapter.queueFragment).setListAdapter(adapter);
@@ -136,7 +139,6 @@ public class OnboardingActivity extends FragmentActivity implements QueueFragmen
 
     private void onSync() {
         Log.d("ACT","sync");
-
     }
 
     @Override
@@ -162,19 +164,18 @@ public class OnboardingActivity extends FragmentActivity implements QueueFragmen
         public ScreenSlidePagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
             javascriptFragment = JavascriptFragment.newInstance("file:///android_asset/hex.html");
-            queueFragment = (Fragment) QueueFragment.newInstance();
+            queueFragment = QueueFragment.newInstance();
 
         }
-
 
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 0: // Fragment # 0 - This will show image
+                case 0:
                     return javascriptFragment;
-                case 1: // Fragment # 1 - This will show image
+                case 1:
                     return queueFragment;
-                default:// Fragment # 2-9 - Will show list
+                default:
                     return javascriptFragment;
             }
         }
@@ -192,19 +193,17 @@ public class OnboardingActivity extends FragmentActivity implements QueueFragmen
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            // Get the data item for this position
             Song song = getItem(position);
-            // Check if an existing view is being reused, otherwise inflate the view
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_row, parent, false);
             }
-            // Lookup view for data population
             TextView first = (TextView) convertView.findViewById(R.id.first_line);
             TextView second = (TextView) convertView.findViewById(R.id.second_line);
-            // Populate the data into the template view using the data object
+            ImageView image = (ImageView) convertView.findViewById(R.id.image);
+
             first.setText(song.title);
             second.setText(song.artist);
-            // Return the completed view to render on screen
+            image.setBackgroundColor(song.color);
             return convertView;
         }
     }
