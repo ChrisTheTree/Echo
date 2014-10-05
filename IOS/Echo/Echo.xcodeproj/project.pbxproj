@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EF028C9919E0DE04007BEC2A /* launch.png in Resources */ = {isa = PBXBuildFile; fileRef = EF028C9819E0DE04007BEC2A /* launch.png */; };
-		EF028C9B19E0E149007BEC2A /* blue_cicle.png in Resources */ = {isa = PBXBuildFile; fileRef = EF028C9A19E0E149007BEC2A /* blue_cicle.png */; };
 		EF8CEAE619E03B7F00861669 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8CEAE519E03B7F00861669 /* AppDelegate.swift */; };
 		EF8CEAE919E03B7F00861669 /* Echo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EF8CEAE719E03B7F00861669 /* Echo.xcdatamodeld */; };
 		EF8CEAEB19E03B7F00861669 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8CEAEA19E03B7F00861669 /* ViewController.swift */; };
@@ -42,6 +40,8 @@
 		EF9E50A719E05119007EEC8C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF9E504919E04FEE007EEC8C /* ViewController.m */; };
 		EF9E50A819E05150007EEC8C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF8CEAEC19E03B7F00861669 /* Main.storyboard */; };
 		EF9E50A919E0515A007EEC8C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF8CEAF119E03B7F00861669 /* LaunchScreen.xib */; };
+		EFECD0F919E1BF720024D899 /* blue_cicle.png in Resources */ = {isa = PBXBuildFile; fileRef = EFECD0F719E1BF720024D899 /* blue_cicle.png */; };
+		EFECD0FA19E1BF720024D899 /* launch.png in Resources */ = {isa = PBXBuildFile; fileRef = EFECD0F819E1BF720024D899 /* launch.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,8 +55,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		EF028C9819E0DE04007BEC2A /* launch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = launch.png; path = ../../../../Desktop/launch.png; sourceTree = "<group>"; };
-		EF028C9A19E0E149007BEC2A /* blue_cicle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blue_cicle.png; path = ../../../../Desktop/blue_cicle.png; sourceTree = "<group>"; };
 		EF8CEAE019E03B7F00861669 /* Echo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Echo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF8CEAE419E03B7F00861669 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EF8CEAE519E03B7F00861669 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -109,6 +107,8 @@
 		EF9E505519E04FEE007EEC8C /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
 		EF9E505619E04FEE007EEC8C /* SRWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRWebSocket.m; sourceTree = "<group>"; };
 		EF9E50AB19E05555007EEC8C /* Echo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Echo-Bridging-Header.h"; sourceTree = "<group>"; };
+		EFECD0F719E1BF720024D899 /* blue_cicle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blue_cicle.png; path = Echo/blue_cicle.png; sourceTree = "<group>"; };
+		EFECD0F819E1BF720024D899 /* launch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = launch.png; path = Echo/launch.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,8 +136,8 @@
 		EF8CEAD719E03B7F00861669 = {
 			isa = PBXGroup;
 			children = (
-				EF028C9A19E0E149007BEC2A /* blue_cicle.png */,
-				EF028C9819E0DE04007BEC2A /* launch.png */,
+				EFECD0F719E1BF720024D899 /* blue_cicle.png */,
+				EFECD0F819E1BF720024D899 /* launch.png */,
 				EF9E502C19E04FEE007EEC8C /* socket.IO-objc */,
 				EF8CED1F19E041C600861669 /* Foundation.framework */,
 				EF8CED1D19E041C000861669 /* Security.framework */,
@@ -354,6 +354,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EFECD0FA19E1BF720024D899 /* launch.png in Resources */,
 				EF9E50A919E0515A007EEC8C /* LaunchScreen.xib in Resources */,
 				EF9E50A819E05150007EEC8C /* Main.storyboard in Resources */,
 				EF9E506819E04FEE007EEC8C /* .gitignore in Resources */,
@@ -362,12 +363,11 @@
 				EF9E506419E04FEE007EEC8C /* ViewController.xib in Resources */,
 				EF9E506919E04FEE007EEC8C /* .gitignore in Resources */,
 				EF9E505719E04FEE007EEC8C /* .gitignore in Resources */,
+				EFECD0F919E1BF720024D899 /* blue_cicle.png in Resources */,
 				EF9E506A19E04FEE007EEC8C /* .gitmodules in Resources */,
-				EF028C9B19E0E149007BEC2A /* blue_cicle.png in Resources */,
 				EF9E506619E04FEE007EEC8C /* SocketTesterARC-Info.plist in Resources */,
 				EF9E505819E04FEE007EEC8C /* .gitmodules in Resources */,
 				EF8CEAF019E03B7F00861669 /* Images.xcassets in Resources */,
-				EF028C9919E0DE04007BEC2A /* launch.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

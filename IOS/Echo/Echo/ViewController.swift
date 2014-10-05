@@ -30,7 +30,6 @@ class ViewController: UIViewController, SocketIODelegate {
     var delay: Double = 0
     let offsetTolerance: CLong = 10000
     let numberOfOffsets: CLong = 10
-    let syncDelay: UInt32 = 40
     var offsetCounter = 0
     var offsets = [CLong](count: 10, repeatedValue: 0.0)
     var synchronized: Bool = false
@@ -49,6 +48,7 @@ class ViewController: UIViewController, SocketIODelegate {
         weak var weakSelf = self
         waitThenRunOnMain(10.0) {
             if let strongSelf = weakSelf {
+                println("starting to preload")
                 strongSelf.player.prerollAtRate(1.0, completionHandler: nil)
             }
         }
@@ -81,7 +81,8 @@ class ViewController: UIViewController, SocketIODelegate {
             self.socket.sendEvent("client_sync_callback", withData: ["t0": t0, "t1": t1, "t2": t2])
         } else if name == "offset" {
             let dict = packet.args[0] as NSDictionary
-            self.offset = dict.objectForKey("offset") as Double
+            var o = dict.objectForKey("offset") as CLong
+            processOffsets(o)
         } else if name == "play" {
             self.playButtonLabel.text = "Stop"
             
@@ -143,5 +144,62 @@ class ViewController: UIViewController, SocketIODelegate {
             dispatch_get_main_queue(), closure)
     }
     
+    func getOffset(offsets: [CLong]) -> CLong {
+//        var counters = [CLong](count: 10, repeatedValue: 0.0)
+//        var results = [CLong](count: 10, repeatedValue: 0.0)
+//        for var i = 0; i < offsets.count; ++i {
+//            var counter: CInt = 0
+//            var sum: CLong = 0
+//            for otherOffset in offsets {
+//                if abs(offsets[i] - otherOffset) <= offsetTolerance {
+//                    counter++
+//                    sum += CLong(counter)
+//                }
+//            }
+//            counters[i] = CLong(counter)
+//            if counter != 0 {
+//                results[i] = CLong(Double(sum) / Double(counter))
+//            }
+//        }
+//        var max: CInt = 0
+//        var maxIndex = 0
+//        for var i = 0; i < counters.count; ++i {
+//            max = CInt(counters[i])
+//            maxIndex = i
+//        }
+//        if max == 0 {
+//            return CLong(0)
+//        } else {
+//            return CLong(results[maxIndex])
+//        }
+        var sum = 0
+        for offset in offsets {
+            sum += offset
+        }
+        return sum / 10
+    }
+    
+    func processOffsets(offset: CLong) {
+        println("offset processOffsets is \(offset)")
+        if self.offsetCounter < numberOfOffsets {
+            self.offsets[self.offsetCounter] = offset
+            ++offsetCounter
+            if offsetCounter < numberOfOffsets {
+                weak var weakSelf = self
+                waitThenRunOnMain(Double(0.05)) {
+                    if let strongSelf = weakSelf {
+                        strongSelf.socket.sendEvent("client_sync", withData: nil)
+                    }
+                }
+                println("syncing for the \(self.offsetCounter) time")
+            }
+        }
+        if self.offsetCounter >= self.numberOfOffsets - 1 {
+            self.offset = Double(getOffset(offsets))
+            println("self.offset is \(self.offset)")
+            self.synchronized = true
+            println("done syncing")
+        }
+    }
 }
 
