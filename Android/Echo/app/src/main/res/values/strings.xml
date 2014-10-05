@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Echo</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_sync">Sync</string>
+    <string name="title_activity_onboarding">OnboardingActivity</string>
+    <string name="share_button">Share</string>
+    <string name="plaw_button">Begin</string>
+    <string name="dummy_content">Instrumentality arises as a result of being united as a single existence.</string>
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_upload">Upload</string>
+
+    <string name="icon_heart">&#xf004;</string>
+    <string name="icon_play">&#xf04b;</string>
+    <string name="icon_next">&#xf04e;</string>
+    <string name="icon_pause">&#xf04c;</string>
+
+</resources>
