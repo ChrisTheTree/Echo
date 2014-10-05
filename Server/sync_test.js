@@ -5,7 +5,7 @@ var fs = require('fs');
 var path = require('path');
 var socketIO = require('socket.io');
 
-var CLIENT_PLAY_FUTURE_DELAY = 5000;
+var CLIENT_PLAY_FUTURE_DELAY = 2000;
 var CLIENT_PLAY_RETRY_OFFSET = 5000;
 var STATIC_QUEUE_ID = 'universal_queue';
 
@@ -44,6 +44,7 @@ function Song(songName, filePath, artist, album, timeLength, imageUrl) {
 function getCurrentSongInfo(){
     var songInfo = {};
     songInfo.song = currentSong;
+    songInfo.startAt = getServerTime() + CLIENT_PLAY_FUTURE_DELAY;
     return songInfo;
 }
 
@@ -152,7 +153,7 @@ io.sockets.on('connection', function(socket) {
 
     socket.on('client_stop', function() {
         if(isPlaying) {
-            socket.emit('stop');
+            io.sockets.emit('stop');
         }
         isPlaying = false;
     });

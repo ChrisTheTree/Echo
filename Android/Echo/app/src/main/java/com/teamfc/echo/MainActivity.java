@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
@@ -27,19 +28,25 @@ public class MainActivity extends Activity {
     public static SocketIO mSocket;
 
 //    public static final long NUMBER_OF_OFFSETS = 20l;
-    public static final int NUMBER_OF_OFFSETS = 100;
+    public static final int NUMBER_OF_OFFSETS = 10;
 //    public static final long OFFSET_TOLERANCE = 10l;
     public static final long OFFSET_TOLERANCE = 10000l;
 //    public static final long SYNC_DELAY = 80l;
-    public static final long SYNC_DELAY = 50l;
+    public static final long SYNC_DELAY = 40l;
 
     public static boolean mSynchronized = false;
     public static long mOffset = 0l;
     public static int mOffsetCounter = 0;
     public static long[] mOffsets = new long[NUMBER_OF_OFFSETS];
 
-    public static MediaPlayer mMediaPlayer;
-    private static boolean mPrepared = false;
+    public static MediaPlayer mMediaPlayer1;
+    public static MediaPlayer mMediaPlayer2;
+    private static boolean mPrepared1 = false;
+    private static boolean mPrepared2 = false;
+    private static int mPlayCount = 0;
+    private static boolean mIsPlaying = false;
+
+    public static Handler mHandler;
 
     public static long getOffset(long[] offsets) {
         int[] counters = new int[offsets.length];
@@ -64,7 +71,7 @@ public class MainActivity extends Activity {
             if(counters[i] > max) {
                 max = counters[i];
                 maxIndex = i;
-                Log.d("SocketIO", "max " + max);
+//                Log.d("SocketIO", "max " + max);
             }
         }
         if(max == 0) { // TODO: this is shit
@@ -78,14 +85,14 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mHandler = new Handler();
 
-        mMediaPlayer = new MediaPlayer();
-        Button button1 = (Button) findViewById(R.id.button1);
-        Button button2 = (Button) findViewById(R.id.button2);
+        mMediaPlayer1 = new MediaPlayer();
+        mMediaPlayer2 = new MediaPlayer();
+        Button syncButton = (Button) findViewById(R.id.button1);
+        Button playButton = (Button) findViewById(R.id.button2);
 
         try {
-//            mSocket = new SocketIO("http://10.0.0.84:3000/");
-//            mSocket = new SocketIO("http://192.168.2.6:3000/");
             mSocket = new SocketIO("http://10.42.0.1:3030/");
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -148,33 +155,64 @@ public class MainActivity extends Activity {
                         }
                     }
                     if(event.equals("play")) {
-                        // TODO!
+//                        Log.d("SocketIO", "play");
+                        JSONObject body = (JSONObject) args[0];
+                        if (body != null) {
+                            try {
+//                                MainActivity.mOffset = body.getLong("offset");
+                                mIsPlaying = true;
+                                long startAt = body.getLong("startAt");
+                                MainActivity.play(startAt);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    if(event.equals("stop")) {
+                        Log.d("SocketIO", "stop");
+                        MainActivity.pause();
                     }
                 }
             });
         }
 
-        if(mMediaPlayer != null) {
-            mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+        if(mMediaPlayer1 != null) {
+            mMediaPlayer1.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 public void onPrepared(MediaPlayer mp) {
-                    mPrepared = true;
-                    Toast.makeText(getApplicationContext(), "Ready!", Toast.LENGTH_SHORT).show();
+                    mPrepared1 = true;
+                    Toast.makeText(getApplicationContext(), "Ready 1!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        if(mMediaPlayer2 != null) {
+            mMediaPlayer2.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                public void onPrepared(MediaPlayer mp) {
+                    mPrepared2 = true;
+                    Toast.makeText(getApplicationContext(), "Ready 2!", Toast.LENGTH_SHORT).show();
                 }
             });
         }
 
         try {
-            if(mMediaPlayer != null) {
-//                mMediaPlayer.setDataSource(Environment.getExternalStorageDirectory().toString() + "/Stuff/testsong.mp3");
-//                mMediaPlayer.setDataSource("http://mp3dos.com/assets/songs/18000-18999/18615-niggas-in-paris-jay-z-kanye-west--1411570006.mp3");
-                mMediaPlayer.setDataSource("https://s3.amazonaws.com/alstroe/850920812.mp3");
+            if(mMediaPlayer1 != null) {
+//                mMediaPlayer1.setDataSource(Environment.getExternalStorageDirectory().toString() + "/Stuff/testsong.mp3");
+//                mMediaPlayer1.setDataSource("http://mp3dos.com/assets/songs/18000-18999/18615-niggas-in-paris-jay-z-kanye-west--1411570006.mp3");
+                mMediaPlayer1.setDataSource("https://s3.amazonaws.com/alstroe/850920812.mp3");
+            }
+            if(mMediaPlayer2 != null) {
+                mMediaPlayer2.setDataSource("https://s3.amazonaws.com/alstroe/850920812.mp3"); // TODO: change!
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        mMediaPlayer.prepareAsync();
+        if(mMediaPlayer1 != null) {
+            mMediaPlayer1.prepareAsync();
+        }
+        if(mMediaPlayer2 != null) {
+            mMediaPlayer2.prepareAsync();
+        }
 
-        button1.setOnClickListener(new View.OnClickListener() {
+        syncButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mSynchronized = false;
@@ -182,14 +220,23 @@ public class MainActivity extends Activity {
                 mOffsetCounter = 0;
                 mSocket.emit("client_sync");
                 long correctedTime = SystemClock.uptimeMillis() - mOffset;
-                Toast.makeText(getApplicationContext(), "Time = " + correctedTime + " Offset = " + mOffset, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Time = " + correctedTime, Toast.LENGTH_SHORT).show();
             }
         });
 
-        button2.setOnClickListener(new View.OnClickListener() {
+        playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                play();
+                if(!mIsPlaying) {
+                    if(mSocket != null) {
+                        mSocket.emit("client_play");
+                    }
+                } else {
+                    if(mSocket != null) {
+                        mSocket.emit("client_stop");
+                    }
+                    pause();
+                }
             }
         });
     }
@@ -210,40 +257,68 @@ public class MainActivity extends Activity {
         if(mOffsetCounter >= NUMBER_OF_OFFSETS) {
             mOffset = getOffset(mOffsets);
             mSynchronized = true;
-            Log.d("SocketIO", "merpy" + offset);
+//            Log.d("SocketIO", "merpy" + offset);
         }
     }
 
-    public void play() {
+    public static void play(long serverStartTime) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                MainActivity.mMediaPlayer.start();
+                if(MainActivity.mPrepared1 && MainActivity.mPlayCount == 0) {
+                    if(MainActivity.mMediaPlayer1 != null) {
+                        MainActivity.mIsPlaying = true;
+                        MainActivity.mMediaPlayer1.start();
+                    }
+                } else if(MainActivity.mPrepared2 && MainActivity.mPlayCount == 1) {
+                    if(MainActivity.mMediaPlayer2 != null) {
+                        MainActivity.mIsPlaying = true;
+                        MainActivity.mMediaPlayer2.start();
+                    }
+                }
             }
         };
-        Handler handler = new Handler();
 
-        if(mPrepared && mSynchronized) {
-            long time = SystemClock.uptimeMillis() - mOffset;
-            long futureTime = (time + 5000l) / 10000l * 10000l;
-            if (futureTime - time < 5000) {
-                futureTime += 10000;
-            }
+        if(mPrepared1 && mPrepared2 && mSynchronized) {
+//            long time = SystemClock.uptimeMillis() - mOffset;
+//            long futureTime = (time + 5000l) / 10000l * 10000l;
+//            if (futureTime - time < 5000) {
+//                futureTime += 10000;
+//            }
 //            long delay = (futureTime + mOffset) - SystemClock.uptimeMillis();
 //            handler.postDelayed(runnable, delay);
-            handler.postAtTime(runnable, futureTime + mOffset);
+//            handler.postAtTime(runnable, futureTime + mOffset);
+//            handler.postAtTime(runnable, serverStartTime + mOffset);
+            if(mHandler != null) {
+                mHandler.postAtTime(runnable, serverStartTime + mOffset);
+            }
 //            long temp = futureTime + mOffset;
 //            Log.d("SocketIO", "Futuretime client: " + temp);
-        } else {
-            Toast.makeText(getApplicationContext(), "Not ready yet!", Toast.LENGTH_SHORT).show();
         }
+//        else {
+//            Toast.makeText(getApplicationContext(), "Not ready yet!", Toast.LENGTH_SHORT).show();
+//        }
+    }
+
+    public static void pause() {
+        if(mMediaPlayer1 != null && mMediaPlayer1.isPlaying()) {
+            mMediaPlayer1.pause();
+        }
+        if(mMediaPlayer2 != null && mMediaPlayer2.isPlaying()) {
+            mMediaPlayer2.pause();
+        }
+        mIsPlaying = false;
     }
 
     @Override
     protected void onDestroy() {
-        if (MainActivity.mMediaPlayer != null) {
-            MainActivity.mMediaPlayer.release();
-            MainActivity.mMediaPlayer = null;
+        if (MainActivity.mMediaPlayer1 != null) {
+            MainActivity.mMediaPlayer1.release();
+            MainActivity.mMediaPlayer1 = null;
+        }
+        if (MainActivity.mMediaPlayer2 != null) {
+            MainActivity.mMediaPlayer2.release();
+            MainActivity.mMediaPlayer2 = null;
         }
         super.onDestroy();
     }
