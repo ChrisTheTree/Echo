@@ -18,7 +18,7 @@ class ViewController: UIViewController, SocketIODelegate {
     var socket : SocketIO = SocketIO()
     var host = "10.42.0.1"
     var port = 3000
-    var songPath = "http://mp3dos.com/assets/songs/18000-18999/18615-niggas-in-paris-jay-z-kanye-west--1411570006.mp3"
+    var songPath = "https://s3.amazonaws.com/alstroe/850920812.mp3"
     var time = mach_timebase_info(numer: 0, denom: 0)
     var player = AVPlayer()
     var playerItem = AVPlayerItem()
@@ -29,6 +29,13 @@ class ViewController: UIViewController, SocketIODelegate {
         super.viewDidLoad()
         self.playerItem = AVPlayerItem(URL: NSURL(string: self.songPath))
         self.player = AVPlayer(playerItem: playerItem)
+//        while self.player.status != AVPlayerStatusReadyToPlay {}
+        weak var weakSelf = self
+        waitThenRunOnMain(3.0) {
+            if let strongSelf = weakSelf {
+                strongSelf.player.prerollAtRate(1.0, completionHandler: nil)
+            }
+        }
         self.socket = SocketIO(delegate: self)
         self.socket.connectToHost(host, onPort: port)
         mach_timebase_info(&time)
@@ -49,56 +56,62 @@ class ViewController: UIViewController, SocketIODelegate {
     
     func socketIO(socket: SocketIO!, didReceiveEvent packet: SocketIOPacket!) {
         let t1: Double = Double(mach_absolute_time() * UInt64(time.numer) / UInt64(time.denom)) / 1000000
-        var dict = packet.args[0] as NSDictionary
         let name = packet.name
         if name == "sync" {
+            var dict = packet.args[0] as NSDictionary
             let t0: CLong = dict.objectForKey("t0") as CLong
             let t2: Double = Double(mach_absolute_time() * UInt64(time.numer) / UInt64(time.denom)) / 1000000
             self.socket.sendEvent("client_sync_callback", withData: ["t0": t0, "t1": t1, "t2": t2])
         }
         if name == "offset" {
+            var dict = packet.args[0] as NSDictionary
             self.offset = dict.objectForKey("offset") as Double
             println("offset is \(self.offset)")
             weak var weakSelf = self
-            waitThenRunOnMain(0.5) {
-                if let strongSelf = weakSelf {
-                    strongSelf.playSong()
-                    println("test")
-                }
-            }
         }
         if name == "play" {
             waitThenRunOnMain(self.offset, closure: { () -> () in
                 println("test")
             })
-            weak var weakSelf = self
-            waitThenRunOnMain(self.offset) {
-                if let strongSelf = weakSelf {
-                    strongSelf.playSong()
-                }
-            }
         }
         
     }
     
     func playSong() {
         self.player.play()
-        self.player.seekToTime(seekToTime, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+//        self.player.seekToTime(seekToTime, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+        println("playing")
     }
     
     @IBAction func syncButtonPressed(sender: AnyObject) {
         println("sync button pressed")
+        self.player.prerollAtRate(1.0, completionHandler: nil)
     }
     
     @IBAction func playButtonPressed(sender: AnyObject) {
         println("play button pressed")
-        let time = -self.offset
-        var futureTime = (time + 5000) / 10000 * 10000
+//        let time = -self.offset / 1000
+//        var futureTime = (time + 5000) / 10000 * 10000
+//        if futureTime - time < 5000 {
+//            futureTime += 10000;
+//        }
+        var t = mach_timebase_info(numer: 0, denom: 0)
+        mach_timebase_info(&t)
+//        var clientTime = ((mach_absolute_time() * UInt64(time.numer)) / UInt64(time.denom))
+        var clientTime = (Double(mach_absolute_time() * UInt64(t.numer)) / Double(UInt64(t.denom)) / 1000000)
+        var time: CLong = CLong(clientTime - self.offset)
+        var futureTime: CLong = (time + 5000) / 10000 * 10000
         if futureTime - time < 5000 {
-            futureTime += 10000;
+            futureTime += 10000
         }
+        clientTime = Double(mach_absolute_time() * UInt64(t.numer)) / Double(UInt64(t.denom)) / 1000000
+        var delay = Double(futureTime + CLong(self.offset) - CLong(clientTime)) / 1000.0
+//        var delay = futureTime + self.offset - clientTime
+//        var futureTime = ((time + CLong(5000)) / CLong(10000)) * CLong(10000)
+        println("offset is \(self.offset), clientTime is \(clientTime), time is \(time), delay is \(delay)")
+        
         weak var weakSelf = self
-        waitThenRunOnMain(0.5) {
+        waitThenRunOnMain(delay) {
             if let strongSelf = weakSelf {
                 strongSelf.playSong()
                 println("test")
