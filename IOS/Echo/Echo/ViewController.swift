@@ -12,7 +12,6 @@ import AVFoundation
 
 class ViewController: UIViewController, SocketIODelegate {
     
-    @IBOutlet var syncButton: UIButton!
     @IBOutlet var playButton: UIButton!
     
     var socket : SocketIO = SocketIO()
@@ -30,7 +29,7 @@ class ViewController: UIViewController, SocketIODelegate {
         self.playerItem = AVPlayerItem(URL: NSURL(string: self.songPath))
         self.player = AVPlayer(playerItem: playerItem)
         weak var weakSelf = self
-        waitThenRunOnMain(3.0) {
+        waitThenRunOnMain(5.0) {
             if let strongSelf = weakSelf {
                 strongSelf.player.prerollAtRate(1.0, completionHandler: nil)
             }
@@ -80,11 +79,6 @@ class ViewController: UIViewController, SocketIODelegate {
         self.player.play()
 //        self.player.seekToTime(seekToTime, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
         println("playing")
-    }
-    
-    @IBAction func syncButtonPressed(sender: AnyObject) {
-        println("sync button pressed")
-        self.player.prerollAtRate(1.0, completionHandler: nil)
     }
     
     @IBAction func playButtonPressed(sender: AnyObject) {

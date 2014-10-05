@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EF028C9919E0DE04007BEC2A /* launch.png in Resources */ = {isa = PBXBuildFile; fileRef = EF028C9819E0DE04007BEC2A /* launch.png */; };
+		EF028C9B19E0E149007BEC2A /* blue_cicle.png in Resources */ = {isa = PBXBuildFile; fileRef = EF028C9A19E0E149007BEC2A /* blue_cicle.png */; };
 		EF8CEAE619E03B7F00861669 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8CEAE519E03B7F00861669 /* AppDelegate.swift */; };
 		EF8CEAE919E03B7F00861669 /* Echo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EF8CEAE719E03B7F00861669 /* Echo.xcdatamodeld */; };
 		EF8CEAEB19E03B7F00861669 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8CEAEA19E03B7F00861669 /* ViewController.swift */; };
@@ -53,6 +55,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EF028C9819E0DE04007BEC2A /* launch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = launch.png; path = ../../../../Desktop/launch.png; sourceTree = "<group>"; };
+		EF028C9A19E0E149007BEC2A /* blue_cicle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blue_cicle.png; path = ../../../../Desktop/blue_cicle.png; sourceTree = "<group>"; };
 		EF8CEAE019E03B7F00861669 /* Echo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Echo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF8CEAE419E03B7F00861669 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EF8CEAE519E03B7F00861669 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -132,6 +136,8 @@
 		EF8CEAD719E03B7F00861669 = {
 			isa = PBXGroup;
 			children = (
+				EF028C9A19E0E149007BEC2A /* blue_cicle.png */,
+				EF028C9819E0DE04007BEC2A /* launch.png */,
 				EF9E502C19E04FEE007EEC8C /* socket.IO-objc */,
 				EF8CED1F19E041C600861669 /* Foundation.framework */,
 				EF8CED1D19E041C000861669 /* Security.framework */,
@@ -357,9 +363,11 @@
 				EF9E506919E04FEE007EEC8C /* .gitignore in Resources */,
 				EF9E505719E04FEE007EEC8C /* .gitignore in Resources */,
 				EF9E506A19E04FEE007EEC8C /* .gitmodules in Resources */,
+				EF028C9B19E0E149007BEC2A /* blue_cicle.png in Resources */,
 				EF9E506619E04FEE007EEC8C /* SocketTesterARC-Info.plist in Resources */,
 				EF9E505819E04FEE007EEC8C /* .gitmodules in Resources */,
 				EF8CEAF019E03B7F00861669 /* Images.xcassets in Resources */,
+				EF028C9919E0DE04007BEC2A /* launch.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -534,7 +542,6 @@
 					"$(ARCHS_STANDARD)",
 					"$(ARCHS_STANDARD_32_BIT)",
 				);
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -554,7 +561,6 @@
 					"$(ARCHS_STANDARD)",
 					"$(ARCHS_STANDARD_32_BIT)",
 				);
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
