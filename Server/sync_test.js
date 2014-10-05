@@ -5,7 +5,7 @@ var fs = require('fs');
 var path = require('path');
 var socketIO = require('socket.io');
 
-var CLIENT_PLAY_FUTURE_DELAY = 2000;
+var CLIENT_PLAY_FUTURE_DELAY = 5000;
 var CLIENT_PLAY_RETRY_OFFSET = 5000;
 var STATIC_QUEUE_ID = 'universal_queue';
 
@@ -101,6 +101,7 @@ function playNextSong(){
     io.sockets.emit('pause');
     isPlaying = false;
     currentSong = queue.getNextSong();
+    var orderedQueue = queue.getQueuedSongs();
     io.sockets.emit('updateQueue', orderedQueue);
     io.sockets.emit('play', getCurrentSongInfo());
     isPlaying = true;
@@ -156,19 +157,20 @@ io.sockets.on('connection', function(socket) {
     socket.on('addSong', function(songName, filePath, artist, album, timeLength, imageUrl) {
         var newSong = new Song(songName, filePath, artist, album, timeLength, imageUrl);
         queue.songs[filePath] = newSong;
-        orderedQueue = queue.getQueuedSongs();
+        var orderedQueue = queue.getQueuedSongs();
         io.sockets.emit('updateQueue', orderedQueue);
     });
 
     socket.on('removeSongAtFilePath', function(filePath) {
         delete queue.songs[filePath];
-        orderedQueue = queue.getQueuedSongs();
+        var orderedQueue = queue.getQueuedSongs();
+        io.sockets.emit('updateQueue', orderedQueue);
     });
 
     socket.on('upvoteSongAtFilePath', function(filePath) {
         var song = queue.songs[filePath];
         song.voteCount += 1;
-        orderedQueue = queue.getQueuedSongs();
+        var orderedQueue = queue.getQueuedSongs();
         io.sockets.emit('updateQueue', orderedQueue);
     });
 

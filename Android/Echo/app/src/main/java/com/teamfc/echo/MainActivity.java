@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
             int counter = 0;
             long sum = 0;
             for(long otherOffset : data) {
-                
+
             }
         }
     }
