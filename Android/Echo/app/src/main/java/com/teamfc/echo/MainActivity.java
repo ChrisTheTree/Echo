@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +18,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 
 import io.socket.IOAcknowledge;
 import io.socket.IOCallback;
@@ -27,7 +29,21 @@ import io.socket.SocketIOException;
 public class MainActivity extends Activity {
 
     public static SocketIO mSocket;
+
+//    public static ArrayList<Long> mOffsets = new ArrayList<Long>();
+    public static final long NUMBER_OF_OFFSETS = 20l;
+    public static final long OFFSET_TOLERANCE = 10l;
+    public static final long SYNC_DELAY = 100l;
+
+
     public static long mOffset = 0l;
+    public static long mPreviousOffset = 0l;
+    public static long mOffsetSum = 0l;
+    public static boolean mSynchronized = false;
+//    public static Handler mHandler = new Handler();
+    public static long mOffsetsCount = 0;
+
+
     public static MediaPlayer mMediaPlayer;
     private static boolean mPrepared = false;
 
@@ -46,7 +62,7 @@ public class MainActivity extends Activity {
         try {
 //            mSocket = new SocketIO("http://10.0.0.84:3000/");
 //            mSocket = new SocketIO("http://192.168.2.6:3000/");
-            mSocket = new SocketIO("http://10.42.0.1:3000/");
+            mSocket = new SocketIO("http://10.42.0.1:3030/");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -84,8 +100,8 @@ public class MainActivity extends Activity {
 
                 @Override
                 public void on(String event, IOAcknowledge ack, Object... args) {
+                    long t1 = SystemClock.uptimeMillis();
                     if(event.equals("sync")) {
-                        long t1 = SystemClock.uptimeMillis();
                         JSONObject body = (JSONObject) args[0];
                         long t0 = 0l;
                         if(body != null) {
@@ -110,8 +126,9 @@ public class MainActivity extends Activity {
                         JSONObject body = (JSONObject) args[0];
                         if (body != null) {
                             try {
-                                MainActivity.mOffset = body.getLong("offset");
-                                Log.d("SocketIO", "Offset = " + MainActivity.mOffset);
+//                                MainActivity.mOffset = body.getLong("offset");
+                                processOffsets(body.getLong("offset"));
+//                                Log.d("SocketIO", "Offset = " + MainActivity.mOffset);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -127,6 +144,12 @@ public class MainActivity extends Activity {
         mButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mOffset = 0l;
+                mPreviousOffset = 0l;
+                mOffsetSum = 0l;
+                mSynchronized = false;
+                mOffsetsCount = 0l;
+
                 mSocket.emit("client_sync");
                 long correctedTime = SystemClock.uptimeMillis() - mOffset;
                 Toast.makeText(getApplicationContext(), "Time = " + correctedTime + " Offset = " + mOffset, Toast.LENGTH_SHORT).show();
@@ -151,8 +174,9 @@ public class MainActivity extends Activity {
 
         try {
             if(mMediaPlayer != null) {
-                mMediaPlayer.setDataSource("http://mp3dos.com/assets/songs/18000-18999/18615-niggas-in-paris-jay-z-kanye-west--1411570006.mp3");
 //                mMediaPlayer.setDataSource(Environment.getExternalStorageDirectory().toString() + "/Stuff/testsong.mp3");
+//                mMediaPlayer.setDataSource("http://mp3dos.com/assets/songs/18000-18999/18615-niggas-in-paris-jay-z-kanye-west--1411570006.mp3");
+                mMediaPlayer.setDataSource("https://s3.amazonaws.com/alstroe/850920812.mp3");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -160,20 +184,77 @@ public class MainActivity extends Activity {
         mMediaPlayer.prepareAsync();
     }
 
+    public void processOffsets(long offset) {
+//        Log.d("SocketIO", "merp");
+        if(!mSynchronized) {
+            Log.d("SocketIO", "merp" + offset);
+            if(mOffsetsCount == 0 || Math.abs(mPreviousOffset - offset) <= OFFSET_TOLERANCE) {
+                ++mOffsetsCount;
+                mOffsetSum += offset;
+            } else {
+                mOffsetsCount = 0;
+                mOffsetSum = 0;
+            }
+            mPreviousOffset = offset;
+            if(mOffsetsCount >= NUMBER_OF_OFFSETS) {
+                mSynchronized = true;
+                mOffset = mOffsetSum / mOffsetsCount;
+//                Toast.makeText(getApplicationContext(), "Synchronized! " + mOffset, Toast.LENGTH_SHORT).show();
+                Log.d("SocketIO", "merpy" + mOffset);
+            } else {
+                try {
+                    Thread.sleep(SYNC_DELAY);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                MainActivity.mSocket.emit("client_sync");
+            }
+        }
+
+//        if(mOffsets.size() < NUMBER_OF_OFFSETS) {
+//            mOffsets.add(offset);
+//            Looper.prepare();
+//            MainActivity.mSocket.emit("client_sync");
+//
+//            mHandler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Log.d("SocketIO", "merp2");
+//                    MainActivity.mSocket.emit("client_sync");
+//                }
+//            }, SYNC_DELAY);
+//        }
+//        if(mOffsets.size() >= NUMBER_OF_OFFSETS) {
+//            long sum = 0;
+//            for(Long value : mOffsets) {
+//                sum += value;
+//            }
+//            mOffset = sum / (long) mOffsets.size();
+//            mSynchronized = true;
+//            Toast.makeText(getApplicationContext(), "Synchronized! " + mOffset, Toast.LENGTH_SHORT).show();
+//        }
+    }
+
     public void play() {
-        if(mPrepared) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                MainActivity.mMediaPlayer.start();
+            }
+        };
+        Handler handler = new Handler();
+
+        if(mPrepared && mSynchronized) {
             long time = SystemClock.uptimeMillis() - mOffset;
             long futureTime = (time + 5000l) / 10000l * 10000l;
             if (futureTime - time < 5000) {
                 futureTime += 10000;
             }
-            Handler handler = new Handler();
-            handler.postAtTime(new Runnable() {
-                @Override
-                public void run() {
-                    MainActivity.mMediaPlayer.start();
-                }
-            }, futureTime + mOffset);
+//            long delay = (futureTime + mOffset) - SystemClock.uptimeMillis();
+//            handler.postDelayed(runnable, delay);
+            handler.postAtTime(runnable, futureTime + mOffset);
+//            long temp = futureTime + mOffset;
+//            Log.d("SocketIO", "Futuretime client: " + temp);
         } else {
             Toast.makeText(getApplicationContext(), "Not ready yet!", Toast.LENGTH_SHORT).show();
         }
