@@ -27,35 +27,52 @@ public class MainActivity extends Activity {
     public static SocketIO mSocket;
 
 //    public static final long NUMBER_OF_OFFSETS = 20l;
-    public static final int NUMBER_OF_OFFSETS = 200;
+    public static final int NUMBER_OF_OFFSETS = 100;
 //    public static final long OFFSET_TOLERANCE = 10l;
-    public static final long OFFSET_TOLERANCE = 5l;
+    public static final long OFFSET_TOLERANCE = 10000l;
 //    public static final long SYNC_DELAY = 80l;
     public static final long SYNC_DELAY = 50l;
 
     public static boolean mSynchronized = false;
     public static long mOffset = 0l;
+    public static int mOffsetCounter = 0;
     public static long[] mOffsets = new long[NUMBER_OF_OFFSETS];
-//    public static long mPreviousOffset = 0l;
-//    public static long mOffsetsCount = 0;
-//    public static long mOffsetSum = 0l;
 
     public static MediaPlayer mMediaPlayer;
     private static boolean mPrepared = false;
 
-    public static long getOffset(long[] data) {
-        int[] counters = new int[data.length];
-        long[] results = new long[data.length];
-        for(int i = 0; i < data.length; ++i) {
+    public static long getOffset(long[] offsets) {
+        int[] counters = new int[offsets.length];
+        long[] results = new long[offsets.length];
+        for(int i = 0; i < offsets.length; ++i) {
             int counter = 0;
             long sum = 0;
-            for(long otherOffset : data) {
-
+            for(long otherOffset : offsets) {
+                if(Math.abs(offsets[i] - otherOffset) <= OFFSET_TOLERANCE) {
+                    ++counter;
+                    sum += otherOffset;
+                }
+            }
+            counters[i] = counter;
+            if(counter != 0) {
+                results[i] = Math.round(((double) sum) / ((double) counter));
             }
         }
+        int max = 0;
+        int maxIndex = 0;
+        for(int i = 0; i < counters.length; ++i) {
+            if(counters[i] > max) {
+                max = counters[i];
+                maxIndex = i;
+                Log.d("SocketIO", "max " + max);
+            }
+        }
+        if(max == 0) { // TODO: this is shit
+            return 0;
+        } else {
+            return results[maxIndex];
+        }
     }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,23 +127,10 @@ public class MainActivity extends Activity {
                     long t1 = SystemClock.uptimeMillis();
                     if(event.equals("sync")) {
                         JSONObject body = (JSONObject) args[0];
-//                        long t0 = 0l;
-//                        if(body != null) {
-//                            try {
-//                                t0 = body.getLong("t0");
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                        JSONObject response = new JSONObject();
                         try {
-//                            response.put("t0", t0);
-//                            response.put("t1", t1);
                             body.put("t1", t1);
                             long t2 = SystemClock.uptimeMillis();
-//                            response.put("t2", t2);
                             body.put("t2", t2);
-//                            MainActivity.mSocket.emit("client_sync_callback", response);
                             MainActivity.mSocket.emit("client_sync_callback", body);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -138,7 +142,6 @@ public class MainActivity extends Activity {
                             try {
 //                                MainActivity.mOffset = body.getLong("offset");
                                 processOffsets(body.getLong("offset"));
-//                                Log.d("SocketIO", "Offset = " + MainActivity.mOffset);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -176,6 +179,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 mSynchronized = false;
                 mOffset = 0l;
+                mOffsetCounter = 0;
                 mSocket.emit("client_sync");
                 long correctedTime = SystemClock.uptimeMillis() - mOffset;
                 Toast.makeText(getApplicationContext(), "Time = " + correctedTime + " Offset = " + mOffset, Toast.LENGTH_SHORT).show();
@@ -191,29 +195,23 @@ public class MainActivity extends Activity {
     }
 
     public void processOffsets(long offset) {
-//        if(!mSynchronized) {
-//            Log.d("SocketIO", "merp" + offset);
-//            if(mOffsetsCount == 0 || Math.abs(mPreviousOffset - offset) <= OFFSET_TOLERANCE) {
-//                ++mOffsetsCount;
-//                mOffsetSum += offset;
-//            } else {
-//                mOffsetsCount = 0;
-//                mOffsetSum = 0;
-//            }
-//            mPreviousOffset = offset;
-//            if(mOffsetsCount >= NUMBER_OF_OFFSETS) {
-//                mSynchronized = true;
-//                mOffset = mOffsetSum / mOffsetsCount;
-//                Log.d("SocketIO", "merpy" + mOffset);
-//            } else {
-//                try {
-//                    Thread.sleep(SYNC_DELAY);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                MainActivity.mSocket.emit("client_sync");
-//            }
-//        }
+        if(mOffsetCounter < NUMBER_OF_OFFSETS) {
+            mOffsets[mOffsetCounter] = offset;
+            ++mOffsetCounter;
+            if(mOffsetCounter < NUMBER_OF_OFFSETS) { // TODO: this is shit
+                try {
+                    Thread.sleep(SYNC_DELAY);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                MainActivity.mSocket.emit("client_sync");
+            }
+        }
+        if(mOffsetCounter >= NUMBER_OF_OFFSETS) {
+            mOffset = getOffset(mOffsets);
+            mSynchronized = true;
+            Log.d("SocketIO", "merpy" + offset);
+        }
     }
 
     public void play() {

@@ -20,9 +20,6 @@ var clientIDs = {};
 
 var isPlaying = false;
 var currentSong;
-var currentSongStartTime = 0;
-var currentSongPauseTime = 0;
-var timeoutObjectForNextSong;
 
 function Queue(queueId) {
     this.songs = {};
@@ -47,17 +44,7 @@ function Song(songName, filePath, artist, album, timeLength, imageUrl) {
 function getCurrentSongInfo(){
     var songInfo = {};
     songInfo.song = currentSong;
-    songInfo.playAtTime = getServerTime() + CLIENT_PLAY_FUTURE_DELAY;
-    if (isPlaying){
-        songInfo.seekTo = getCurrentSongPosition + CLIENT_PLAY_FUTURE_DELAY;
-    } else {
-        songInfo.seekTo = 0;
-    }
     return songInfo;
-}
-
-function timeoutTillNextSong() {
-    return currentSong.timeLength - getCurrentSongPosition() + 1;
 }
 
 Queue.prototype.getQueuedSongs = function() {
@@ -93,33 +80,16 @@ Queue.prototype.getNextSong = function() {
     }
     nextSong.voteCount = 0;
     nextSong.timeStamp = getServerTime();
-    nextSong.isPlaying = true;
     return nextSong;
 };
 
 function playNextSong(){
-    io.sockets.emit('pause');
-    isPlaying = false;
+    io.sockets.emit('stop');
     currentSong = queue.getNextSong();
     var orderedQueue = queue.getQueuedSongs();
     io.sockets.emit('updateQueue', orderedQueue);
     io.sockets.emit('play', getCurrentSongInfo());
     isPlaying = true;
-    timeoutObjectForNextSong = setTimeout(playNextSong, timeoutTillNextSong());
-}
-
-function getCurrentSongPosition() {
-    var position = 0;
-    if(isPlaying) {
-        position = getServerTime() - currentSongStartTime;
-    } else {
-        position = currentSongPauseTime - currentSongStartTime;
-    }
-    if(position > 0) {
-        return position;
-    } else {
-        return 0;
-    }
 }
 
 //-------------------------------------------------------------------------------------Queue End
@@ -150,7 +120,6 @@ io.sockets.on('connection', function(socket) {
 
 //-------------------------------------------------------------------------------------Queue Start
 
-    //calls function to emit sync on current socket
     var orderedQueue = queue.getQueuedSongs();
     socket.emit('updateQueue', orderedQueue);
 
@@ -177,22 +146,15 @@ io.sockets.on('connection', function(socket) {
     socket.on('client_play', function() {
         if(isPlaying == false){
             io.sockets.emit('play', getCurrentSongInfo());
-            isPlaying = true;
-            timeoutObjectForNextSong = setTimeout(playNextSong, timeoutTillNextSong());
-        } else {
-            socket.emit('play', getCurrentSongInfo());
         }
+        isPlaying = true;
     });
 
-    socket.on('client_pause', function() {
+    socket.on('client_stop', function() {
         if(isPlaying) {
-            currentSongPauseTime = getServerTime();
-            isPlaying = false;
-            io.sockets.emit('pause');
-            clearTimeout(timeoutObjectForNextSong);
-        } else {
-            socket.emit('pause');
+            socket.emit('stop');
         }
+        isPlaying = false;
     });
 
     socket.on('client_next', playNextSong);
