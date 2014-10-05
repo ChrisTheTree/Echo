@@ -21,7 +21,7 @@ class ViewController: UIViewController, SocketIODelegate {
     var socket : SocketIO = SocketIO()
     let host = "10.42.0.1"
     let port = 3030
-    var songPath = "https://s3.amazonaws.com/alstroe/850920812.mp3"
+    var songPath = "https://s3.amazonaws.com/alstroe/1468664291.mp3"
     var time = mach_timebase_info(numer: 0, denom: 0)
     var player = AVPlayer()
     var playerItem = AVPlayerItem()
