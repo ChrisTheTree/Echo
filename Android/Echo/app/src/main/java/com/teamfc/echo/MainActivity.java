@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
     public static SocketIO mSocket;
 
 //    public static final long NUMBER_OF_OFFSETS = 20l;
-    public static final int NUMBER_OF_OFFSETS = 10;
+    public static final int NUMBER_OF_OFFSETS = 40;
 //    public static final long OFFSET_TOLERANCE = 10l;
     public static final long OFFSET_TOLERANCE = 10000l;
 //    public static final long SYNC_DELAY = 80l;

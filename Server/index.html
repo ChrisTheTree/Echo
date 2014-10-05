@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" type="text/css" href="css">
+</head>
+
+<body>
+	<div class="background">
+	</div>
+	<div class="content">
+		<div class="left">
+			<div id="container_button">
+				<div id="hole">
+					<div id="button">
+						<div id="triangle"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="right">
+			<div class="songTitleBackground"></div>
+			<div class="appTitle">ECHO</div>
+			<!--<div class="songTitle">Jay-Z, Kayne West - Niggas in Paris</div>-->
+			<div class="songTitle">Kayne West - Homecoming</div>
+		</div>
+		
+	</div>
+<audio controls id="media">
+ 	<!--<source id="songName" src="http://mp3dos.com/assets/songs/18000-18999/18615-niggas-in-paris-jay-z-kanye-west--1411570006.mp3" type="audio/mpeg">-->
+ 	<source id="songName" src="https://s3.amazonaws.com/alstroe/1468664291.mp3" type="audio/mpeg">
+	Your browser does not support the audio element.
+</audio>
+<button id="start" type="button" style="display:none;">
+	START SONG
+</button>
+
+</body>
+</html>
+
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<!--<script src="https://cdn.socket.io/socket.io-1.1.0.js"></script>-->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/trianglify/0.1.4/trianglify.js"></script>
+<script>
+	var t = new Trianglify({
+    cellsize: 200});
+	var pattern = t.generate(window.innerWidth, window.innerHeight);
+	$('.background').css( "background-image", pattern.dataUrl );
+
+
+	var toggle=true;
+	var audio = document.getElementById("media");
+	var counter = 0;
+	var currentTime = Date.now();	
+	var t0, t1, t2 = 0;
+	var socket = io.connect();
+	var startTime = 0;
+	var offset = 0;
+	var counter = 0;
+	var repeatSync;
+    var isPlaying = false;
+
+	function getOffset(data) {
+		t1 = Math.round(performance.now());
+		t0 = data;
+		t2 = Math.round(performance.now());
+		socket.emit('client_sync_callback', {t0 : t0, t1: t1, t2: t2});
+	}
+
+	$('#button').click(function () {
+		console.log ("Click");
+        if (isPlaying) {
+            socket.emit('client_stop');
+        } else {
+            socket.emit('client_play');
+        }
+	});
+
+	socket.on ('timeSync', function(data) {
+		counter++;
+		getOffset(data.t0);
+		console.log (counter);
+		if (counter > 10) {
+			clearInterval(repeatSync);
+		}
+	});
+
+	socket.on('play', function(data) {
+		console.log (data);
+		//data = JSON.parse(data);
+		counter++;
+		if (counter > 11) {
+			setTimeout(function(){
+			 	audio.play();
+                isPlaying = true;
+			 	$('#button').toggleClass( "active" );
+				$('.songTitle').toggleClass( "active" );
+				$('.songTitleBackground').toggleClass( "active" );
+				$('.appTitle').toggleClass( "active" );
+			}, data.startAt - (Math.round(performance.now()) - offset));
+		}
+	});
+
+    socket.on('stop', function(data){
+        audio.pause();
+        audio.currentTime = 0;
+        isPlaying = false;
+        $('#button').toggleClass( "active" );
+        $('.songTitle').toggleClass( "active" );
+        $('.songTitleBackground').toggleClass( "active" );
+        $('.appTitle').toggleClass( "active" );
+
+    });
+
+
+  	socket.on('sync', function(data){
+		getOffset(data.t0);
+		repeatSync = setInterval(function () {
+			socket.emit('startsong', {test : 1});
+		}, 200);
+  	});
+//
+  	socket.on('offset', function(data){
+  		offset = data.offset;
+        console.log (offset, "offset");
+  	});
+</script>

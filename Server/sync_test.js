@@ -16,6 +16,27 @@ var io =  socketIO.listen(server);
 var clientCount = 0;
 var clientIDs = {};
 
+
+//Chris
+var currentSongStartTime = 0;
+var currentSongPauseTime = 0;
+
+function getCurrentSongPosition() {
+    var position = 0;
+    if(isPlaying) {
+        position = getServerTime() - currentSongStartTime;
+    } else {
+        position = currentSongPauseTime - currentSongStartTime;
+    }
+    if(position > 0) {
+        return Math.floor(position / 1000);
+    } else {
+        return 0;
+    }
+}
+//Chris
+
+
 //-------------------------------------------------------------------------------------Queue Start
 
 var isPlaying = false;
@@ -27,8 +48,10 @@ function Queue(queueId) {
 }
 
 var queue = new Queue(STATIC_QUEUE_ID);
-currentSong = new Song('Niggas In Paris', 'https://s3.amazonaws.com/alstroe/850920812.mp3', 'J-Z', 'Throne', 219, 'testURL');
-queue.songs['https://s3.amazonaws.com/alstroe/850920812.mp3'] = currentSong;
+//currentSong = new Song('Niggas In Paris', 'https://s3.amazonaws.com/alstroe/850920812.mp3', 'J-Z', 'Throne', 219, 'testURL');
+currentSong = new Song('Homecoming', 'https://s3.amazonaws.com/alstroe/1468664291.mp3', 'Kanye West', 'Graduation', 219, 'testURL');
+//queue.songs['https://s3.amazonaws.com/alstroe/850920812.mp3'] = currentSong;
+queue.songs['https://s3.amazonaws.com/alstroe/1468664291.mp3'] = currentSong;
 
 function Song(songName, filePath, artist, album, timeLength, imageUrl) {
     this.songName = songName;
@@ -110,8 +133,11 @@ function calculateOffset(t0, t1, t2, t3) { // TODO: Error check!
 }
 
 app.get('/', function(req, res) {
-    console.log('connection');
-    res.send("hi");
+    res.sendfile("index.html");
+});
+
+app.get('/css', function(req, res) {
+    res.sendfile("web.css");
 });
 
 io.sockets.on('connection', function(socket) {
@@ -146,6 +172,9 @@ io.sockets.on('connection', function(socket) {
 
     socket.on('client_play', function() {
         if(isPlaying == false){
+            // Chris
+            currentSongStartTime = getServerTime();
+            // Chris
             io.sockets.emit('play', getCurrentSongInfo());
         }
         isPlaying = true;
@@ -153,6 +182,9 @@ io.sockets.on('connection', function(socket) {
 
     socket.on('client_stop', function() {
         if(isPlaying) {
+            // Chris
+            currentSongPauseTime = getServerTime();
+            // Chris
             io.sockets.emit('stop');
         }
         isPlaying = false;
@@ -177,8 +209,17 @@ io.sockets.on('connection', function(socket) {
 
     socket.on('disconnect', function() {
         --clientCount;
+        if (clientCount == 0){
+            isPlaying == false;
+        }
         delete clientIDs[socket.id]; // TODO: Error check!
     });
+
+    // Siva
+    socket.on('startsong', function() {
+        socket.emit('timeSync', {t0: getServerTime()});
+    });
+    // Siva
 });
 
 server.listen(3030, function() {
