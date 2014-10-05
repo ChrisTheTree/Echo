@@ -15,6 +15,6 @@
     <string name="icon_heart">&#xf004;</string>
     <string name="icon_play">&#xf04b;</string>
     <string name="icon_next">&#xf04e;</string>
-    <string name="icon_pause">&#xf04c;</string>
+    <string name="icon_stop">&#xf04d;</string>
 
 </resources>

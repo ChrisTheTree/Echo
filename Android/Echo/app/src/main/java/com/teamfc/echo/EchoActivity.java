@@ -53,11 +53,11 @@ public class EchoActivity extends FragmentActivity implements QueueFragment.OnFr
     public static SocketIO mSocket;
 
     //    public static final long NUMBER_OF_OFFSETS = 20l;
-    public static final int NUMBER_OF_OFFSETS = 10;
+    public static final int NUMBER_OF_OFFSETS = 20;
     //    public static final long OFFSET_TOLERANCE = 10l;
     public static final long OFFSET_TOLERANCE = 10000l;
     //    public static final long SYNC_DELAY = 80l;
-    public static final long SYNC_DELAY = 40l;
+    public static final long SYNC_DELAY = 50l;
 
     public static boolean mSynchronized = false;
     public static long mOffset = 0l;
@@ -65,11 +65,11 @@ public class EchoActivity extends FragmentActivity implements QueueFragment.OnFr
     public static long[] mOffsets = new long[NUMBER_OF_OFFSETS];
 
     public static MediaPlayer mMediaPlayer1;
-    public static MediaPlayer mMediaPlayer2;
+//    public static MediaPlayer mMediaPlayer2;
     private static boolean mPrepared1 = false;
-    private static boolean mPrepared2 = false;
+//    private static boolean mPrepared2 = false;
     private static int mPlayCount = 0;
-    private static boolean mIsPlaying = false;
+//    private static boolean mIsPlaying = false;
 
     public static Handler mHandler;
 
@@ -132,7 +132,7 @@ public class EchoActivity extends FragmentActivity implements QueueFragment.OnFr
         mHandler = new Handler();
 
         mMediaPlayer1 = new MediaPlayer();
-        mMediaPlayer2 = new MediaPlayer();
+//        mMediaPlayer2 = new MediaPlayer();
 
         try {
             mSocket = new SocketIO("http://10.42.0.1:3030/");
@@ -202,7 +202,6 @@ public class EchoActivity extends FragmentActivity implements QueueFragment.OnFr
                         if (body != null) {
                             try {
 //                                MainActivity.mOffset = body.getLong("offset");
-                                mIsPlaying = true;
                                 long startAt = body.getLong("startAt");
                                 EchoActivity.play(startAt);
                             } catch (JSONException e) {
@@ -211,7 +210,7 @@ public class EchoActivity extends FragmentActivity implements QueueFragment.OnFr
                         }
                     }
                     if(event.equals("stop")) {
-                        Log.d("SocketIO", "stop");
+//                        Log.d("SocketIO", "stop");
                         EchoActivity.pause();
                     }
                 }
@@ -226,33 +225,33 @@ public class EchoActivity extends FragmentActivity implements QueueFragment.OnFr
                 }
             });
         }
-        if(mMediaPlayer2 != null) {
-            mMediaPlayer2.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                public void onPrepared(MediaPlayer mp) {
-                    mPrepared2 = true;
-                    Toast.makeText(getApplicationContext(), "Ready 2!", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+//        if(mMediaPlayer2 != null) {
+//            mMediaPlayer2.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//                public void onPrepared(MediaPlayer mp) {
+//                    mPrepared2 = true;
+//                    Toast.makeText(getApplicationContext(), "Ready 2!", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        }
 
         try {
             if(mMediaPlayer1 != null) {
 //                mMediaPlayer1.setDataSource(Environment.getExternalStorageDirectory().toString() + "/Stuff/testsong.mp3");
 //                mMediaPlayer1.setDataSource("http://mp3dos.com/assets/songs/18000-18999/18615-niggas-in-paris-jay-z-kanye-west--1411570006.mp3");
-                mMediaPlayer1.setDataSource("https://s3.amazonaws.com/alstroe/850920812.mp3");
+                mMediaPlayer1.setDataSource("https://s3.amazonaws.com/alstroe/1468664291.mp3");
             }
-            if(mMediaPlayer2 != null) {
-                mMediaPlayer2.setDataSource("https://s3.amazonaws.com/alstroe/850920812.mp3"); // TODO: change!
-            }
+//            if(mMediaPlayer2 != null) {
+//                mMediaPlayer2.setDataSource("https://s3.amazonaws.com/alstroe/850920812.mp3"); // TODO: change!
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         }
         if(mMediaPlayer1 != null) {
             mMediaPlayer1.prepareAsync();
         }
-        if(mMediaPlayer2 != null) {
-            mMediaPlayer2.prepareAsync();
-        }
+//        if(mMediaPlayer2 != null) {
+//            mMediaPlayer2.prepareAsync();
+//        }
 
     }
 
@@ -272,7 +271,8 @@ public class EchoActivity extends FragmentActivity implements QueueFragment.OnFr
         if(mOffsetCounter >= NUMBER_OF_OFFSETS) {
             mOffset = getOffset(mOffsets);
             mSynchronized = true;
-//            Log.d("SocketIO", "merpy" + offset);
+//            Toast.makeText(getApplicationContext(), "Synchronized!", Toast.LENGTH_SHORT).show();
+            Log.d("SocketIO", "synced" + offset);
         }
     }
 
@@ -282,19 +282,18 @@ public class EchoActivity extends FragmentActivity implements QueueFragment.OnFr
             public void run() {
                 if(EchoActivity.mPrepared1 && EchoActivity.mPlayCount == 0) {
                     if(EchoActivity.mMediaPlayer1 != null) {
-                        EchoActivity.mIsPlaying = true;
                         EchoActivity.mMediaPlayer1.start();
                     }
-                } else if(EchoActivity.mPrepared2 && EchoActivity.mPlayCount == 1) {
-                    if(EchoActivity.mMediaPlayer2 != null) {
-                        EchoActivity.mIsPlaying = true;
-                        EchoActivity.mMediaPlayer2.start();
-                    }
                 }
+//                else if(EchoActivity.mPrepared2 && EchoActivity.mPlayCount == 1) {
+//                    if(EchoActivity.mMediaPlayer2 != null) {
+//                        EchoActivity.mMediaPlayer2.start();
+//                    }
+//                }
             }
         };
 
-        if(mPrepared1 && mPrepared2 && mSynchronized) {
+        if(mPrepared1 && /*mPrepared2 &&*/ mSynchronized) {
 //            long time = SystemClock.uptimeMillis() - mOffset;
 //            long futureTime = (time + 5000l) / 10000l * 10000l;
 //            if (futureTime - time < 5000) {
@@ -318,11 +317,11 @@ public class EchoActivity extends FragmentActivity implements QueueFragment.OnFr
     public static void pause() {
         if(mMediaPlayer1 != null && mMediaPlayer1.isPlaying()) {
             mMediaPlayer1.pause();
+            mMediaPlayer1.seekTo(0);
         }
-        if(mMediaPlayer2 != null && mMediaPlayer2.isPlaying()) {
-            mMediaPlayer2.pause();
-        }
-        mIsPlaying = false;
+//        if(mMediaPlayer2 != null && mMediaPlayer2.isPlaying()) {
+//            mMediaPlayer2.pause();
+//        }
     }
 
     @Override
@@ -331,10 +330,10 @@ public class EchoActivity extends FragmentActivity implements QueueFragment.OnFr
             EchoActivity.mMediaPlayer1.release();
             EchoActivity.mMediaPlayer1 = null;
         }
-        if (EchoActivity.mMediaPlayer2 != null) {
-            EchoActivity.mMediaPlayer2.release();
-            EchoActivity.mMediaPlayer2 = null;
-        }
+//        if (EchoActivity.mMediaPlayer2 != null) {
+//            EchoActivity.mMediaPlayer2.release();
+//            EchoActivity.mMediaPlayer2 = null;
+//        }
         super.onDestroy();
     }
 
@@ -382,16 +381,17 @@ public class EchoActivity extends FragmentActivity implements QueueFragment.OnFr
     private void makeQueue() {
         ArrayList<Song> songs = new ArrayList<Song>();
         ColorUtils colorUtils = new ColorUtils(this);
-        songs.add(new Song("Baby","Justin Biebs",colorUtils.getColor()));
-        songs.add(new Song("Niggas in Paris","Jay-Z, Kanye West",colorUtils.getColor()));
+
         songs.add(new Song("The Humpty Dance", "Digital Underground",colorUtils.getColor()));
+        songs.add(new Song("Gangsta's Paradise", "Coolio feat. L.V.",colorUtils.getColor()));
+        songs.add(new Song("Flava In Ya Ear", "Craig Mack",colorUtils.getColor()));
         songs.add(new Song("Thrift Shop", "Macklemore & Ryan Lewis feat. Wanz",colorUtils.getColor()));
+        songs.add(new Song("Can't Hold Us", "Macklemore & Ryan Lewis feat. Wanz",colorUtils.getColor()));
         songs.add(new Song("Tootsee Roll", "69 Boyz",colorUtils.getColor()));
-        songs.add(new Song("Baby","Justin Biebs",colorUtils.getColor()));
-        songs.add(new Song("Niggas in Paris","Jay-Z, Kanye West",colorUtils.getColor()));
-        songs.add(new Song("The Humpty Dance", "Digital Underground",colorUtils.getColor()));
-        songs.add(new Song("Thrift Shop", "Macklemore & Ryan Lewis feat. Wanz",colorUtils.getColor()));
-        songs.add(new Song("Tootsee Roll", "69 Boyz",colorUtils.getColor()));
+        songs.add(new Song("No Hands","Waka Flocka Flame feat. Roscoe Dash & Wale",colorUtils.getColor()));
+        songs.add(new Song("Big Poppa/Warning","The Notorious B.I.G.",colorUtils.getColor()));
+        songs.add(new Song("Expression","Salt-N-Pepa",colorUtils.getColor()));
+
 
         SongAdapter adapter = new SongAdapter(this, songs);
         ((ListFragment)mPagerAdapter.queueFragment).setListAdapter(adapter);

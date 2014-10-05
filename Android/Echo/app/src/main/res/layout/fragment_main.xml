@@ -48,6 +48,28 @@
                 android:textColor="#ffffff"
                 android:layout_gravity="center" />
         </LinearLayout>
+
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+
+           <Button
+               android:id="@+id/front_play"
+               android:layout_height="50dp"
+               android:layout_width="50dp"
+               android:padding="10dp"
+               android:layout_alignParentRight="true"
+               android:layout_alignParentBottom="true"
+               android:background="@android:color/transparent"
+               style="?android:attr/buttonStyleSmall"
+               android:textSize="20dp"
+               android:textColor="#ffffff"
+               android:text="@string/icon_play" />
+        </RelativeLayout>
     </FrameLayout>
+
+
+
+
 
 </RelativeLayout>

@@ -2,11 +2,8 @@ package com.teamfc.echo;
 
 import android.app.Activity;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,20 +45,20 @@ public class QueueFragment extends ListFragment {
         final Button playButton = (Button) getView().findViewById(R.id.play_pause);
         playButton.setTypeface(font);
 
-        final String pause = getResources().getString(R.string.icon_pause);
+        final String pause = getResources().getString(R.string.icon_stop);
         final String play = getResources().getString(R.string.icon_play);
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mListener != null) {
-                    if (playButton.getText() == play) {
-                        mListener.onPlay();
-                        playButton.setText(pause);
-                    } else {
-                        mListener.onPlause();
-                        playButton.setText(play);
-                    }
+            if (mListener != null) {
+                if (playButton.getText() == play) {
+                    mListener.onPlay();
+                    playButton.setText(pause);
+                } else {
+                    mListener.onPlause();
+                    playButton.setText(play);
                 }
+            }
             }
         });
 
@@ -70,9 +67,9 @@ public class QueueFragment extends ListFragment {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mListener != null) {
-                    mListener.onNext();
-                }
+            if (mListener != null) {
+                mListener.onNext();
+            }
             }
         });
     }
