@@ -67,6 +67,7 @@ public class AmazonUtils {
                     e.printStackTrace();
                 }
             }
+            Log.d("File", hash+".mp3");
 
             //TODO: EXTIRPATE; I have no idea what im doing. Don't judge me.
             final Activity activity = weakReference.get();
